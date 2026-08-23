@@ -401,17 +401,17 @@ body {
 }
 @media print {
   @page {
-    size: landscape;
+    size: A4;
     margin: 1cm;
   }
   
   /* Hide UI elements */
-  .sidebar, .header, .fab, .card-actions, .form-grid {
+  .sidebar, .header, .fab, .card-actions, .form-grid, footer, .header-actions, button, .pagination-controls, input, .filter-label, .btn-icon, .btn-youtube, .btn-secondary, .btn-blue {
     display: none !important;
   }
   
   /* Reset layout for printing */
-  body, .app-layout, .main-wrapper, .dashboard-content, .chart-card {
+  body, .app-layout, .main-wrapper, .dashboard-content, .chart-card, .premium-card {
     background: white !important;
     height: auto !important;
     width: 100% !important;
@@ -422,7 +422,7 @@ body {
   }
   
   /* Remove border and radius from cards when printing */
-  .dashboard-content, .chart-card {
+  .dashboard-content, .chart-card, .premium-card {
     border: none !important;
     border-radius: 0 !important;
   }
