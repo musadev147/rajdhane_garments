@@ -1,4 +1,6 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../../components/PrintHeader';
 import { Printer, RotateCcw, Plus } from 'lucide-react';
 
 const SupplierStatement = () => {
@@ -20,16 +22,8 @@ const SupplierStatement = () => {
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px' }}>
+      <PrintHeader />
       <div className="chart-card">
-        {/* Company Header Info */}
-        <div style={{ textAlign: 'center', marginBottom: '32px', color: 'var(--text-main)' }}>
-          <h4 style={{ fontSize: '16px', fontWeight: '500', marginBottom: '8px' }}>বিসমিল্লাহির রাহমানির রাহিম</h4>
-          <h1 style={{ fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#000' }}>রাজধানী গার্মেন্টস</h1>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>নেহা শপিংমল এর দ্বিতীয় তলা, কালিগঞ্জ, ঝিনাইদহ</p>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>Contact No - 01716912350, 01727902498</p>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>E-mail - demo@gmail.com</p>
-          <p style={{ fontSize: '15px' }}>Website - https://rajdhanigarmentsbd.com/</p>
-        </div>
 
         {/* Title and Action */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
@@ -43,7 +37,7 @@ const SupplierStatement = () => {
         <div className="form-grid" style={{ gridTemplateColumns: '1fr 1fr auto', marginBottom: '24px', alignItems: 'flex-end', gap: '16px' }}>
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Supplier</label>
-            <div className="form-input">
+            <div className="form-input floating-label">
               <select>
                 <option>Select Suppliers</option>
               </select>
@@ -53,11 +47,11 @@ const SupplierStatement = () => {
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Date</label>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" style={{ color: 'var(--primary)' }} />
+              <div className="form-input floating-label" style={{ flex: 1 }}>
+                <input type="date" style={{ color: 'var(--primary)' }} />
               </div>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" style={{ color: 'var(--primary)' }} />
+              <div className="form-input floating-label" style={{ flex: 1 }}>
+                <input type="date" style={{ color: 'var(--primary)' }} />
               </div>
             </div>
           </div>

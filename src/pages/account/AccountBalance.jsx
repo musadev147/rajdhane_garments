@@ -1,14 +1,25 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../components/PrintHeader';
 import { ArrowLeft, Printer, RotateCcw } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../context/AppContext';
 
 const AccountBalance = () => {
+  const { t } = useTranslation();
+
+  const { state } = useAppContext();
+  const { accounts } = state;
+  const navigate = useNavigate();
+
+  const totalBalance = accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
+
   return (
     <div className="premium-card">
       <div className="premium-header">
         <h2 className="premium-title" style={{ textTransform: 'uppercase' }}>Account Balance List</h2>
         <div className="header-actions">
-          <button className="btn-gray-outline"><ArrowLeft size={16} /> Go Back</button>
+          <button className="btn-gray-outline" onClick={() => navigate(-1)}><ArrowLeft size={16} /> Go Back</button>
           <Link to="/account/account-create" style={{ textDecoration: 'none' }}>
             <button className="btn-green">Add New</button>
           </Link>
@@ -16,6 +27,7 @@ const AccountBalance = () => {
       </div>
 
       <div className="premium-body" style={{ padding: '24px' }}>
+        <PrintHeader />
         
         {/* Table Section */}
         <div className="table-header-controls" style={{ marginBottom: '16px' }}>
@@ -32,8 +44,8 @@ const AccountBalance = () => {
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>Excel</button>
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>CSV</button>
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>PDF</button>
-            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }} onClick={() => window.print()}><Printer size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> Print</button>
-            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}><RotateCcw size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> Reset</button>
+            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }} onClick={() => window.print()}><Printer size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> {t('common.print')}</button>
+            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}><RotateCcw size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> {t('common.reset')}</button>
           </div>
         </div>
 
@@ -47,42 +59,27 @@ const AccountBalance = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style={{ textAlign: 'left', paddingLeft: '12px' }}>1</td>
-              <td style={{ textAlign: 'left' }}>TOTAL BALENCE</td>
-              <td style={{ textAlign: 'left' }}></td>
-              <td style={{ textAlign: 'left' }}>6,918,623.53</td>
-            </tr>
-            <tr>
-              <td style={{ textAlign: 'left', paddingLeft: '12px' }}>2</td>
-              <td style={{ textAlign: 'left' }}>RAJDHANI CC ACCOUNT</td>
-              <td style={{ textAlign: 'left' }}>13137</td>
-              <td style={{ textAlign: 'left' }}>590.00</td>
-            </tr>
-            <tr>
-              <td style={{ textAlign: 'left', paddingLeft: '12px' }}>3</td>
-              <td style={{ textAlign: 'left' }}>JENTS CC ACCOUNT</td>
-              <td style={{ textAlign: 'left' }}>134</td>
-              <td style={{ textAlign: 'left' }}>0.00</td>
-            </tr>
+            {accounts.map((acc, idx) => (
+              <tr key={acc.id}>
+                <td style={{ textAlign: 'left', paddingLeft: '12px' }}>{idx + 1}</td>
+                <td style={{ textAlign: 'left' }}>{acc.name}</td>
+                <td style={{ textAlign: 'left' }}>{acc.accountNumber || 'N/A'}</td>
+                <td style={{ textAlign: 'left' }}>{acc.balance}</td>
+              </tr>
+            ))}
+            {accounts.length === 0 && (
+              <tr>
+                <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>No accounts found.</td>
+              </tr>
+            )}
           </tbody>
           <tfoot>
             <tr style={{ fontWeight: 'bold', background: '#f9fafb' }}>
-              <td colSpan="3" style={{ textAlign: 'center', padding: '12px' }}>Total</td>
-              <td style={{ textAlign: 'left', padding: '12px' }}>6,919,213.53</td>
+              <td colSpan="3" style={{ textAlign: 'center', padding: '12px' }}>{t('common.total')}</td>
+              <td style={{ textAlign: 'left', padding: '12px' }}>{totalBalance}</td>
             </tr>
           </tfoot>
         </table>
-
-        {/* Pagination Section */}
-        <div className="table-footer-controls">
-          <div>Showing 1 to 3 of 3 entries</div>
-          <div className="pagination-controls">
-            <button className="pagination-btn">Previous</button>
-            <button className="pagination-btn" style={{ background: '#3b82f6', color: 'white', borderColor: '#3b82f6' }}>1</button>
-            <button className="pagination-btn">Next</button>
-          </div>
-        </div>
 
       </div>
     </div>

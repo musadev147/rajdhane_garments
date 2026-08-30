@@ -2,6 +2,10 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoanClientCreate from '../pages/loan/LoanClientCreate';
 import LoanClientList from '../pages/loan/LoanClientList';
+import LoanReceiveList from '../pages/loan/LoanReceiveList';
+import LoanReceiveCreate from '../pages/loan/LoanReceiveCreate';
+import LoanPaymentList from '../pages/loan/LoanPaymentList';
+import LoanStatement from '../pages/loan/LoanStatement';
 
 const LoanRoutes = () => {
   return (
@@ -10,11 +14,10 @@ const LoanRoutes = () => {
         <Route path="/" element={<Navigate to="client-create" replace />} />
         <Route path="client-create" element={<LoanClientCreate />} />
         <Route path="client-list" element={<LoanClientList />} />
-        
-        {/* Placeholders for future pages */}
-        <Route path="receive" element={<div style={{ padding: '20px' }}>Loan Receive Component (Coming Soon)</div>} />
-        <Route path="payment" element={<div style={{ padding: '20px' }}>Loan Payment Component (Coming Soon)</div>} />
-        <Route path="statement" element={<div style={{ padding: '20px' }}>Loan Statement Component (Coming Soon)</div>} />
+        <Route path="receive" element={<LoanReceiveList />} />
+        <Route path="receive-create" element={<LoanReceiveCreate />} />
+        <Route path="payment" element={<LoanPaymentList />} />
+        <Route path="statement" element={<LoanStatement />} />
       </Routes>
     </div>
   );

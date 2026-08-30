@@ -1,7 +1,11 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../components/PrintHeader';
 import { Play, Printer } from 'lucide-react';
 
 const Profit = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="premium-card">
       <div className="premium-header">
@@ -18,11 +22,12 @@ const Profit = () => {
       </div>
 
       <div className="premium-body" style={{ padding: '40px' }}>
+        <PrintHeader />
         
         {/* Centered Date Search */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px' }}>
           <div style={{ width: '600px' }}>
-            <label className="filter-label" style={{ display: 'block', marginBottom: '8px' }}>Search By Date</label>
+            <label className="filter-label" style={{ display: 'block', marginBottom: '8px' }}>{t('common.search_by_date')}</label>
             <div style={{ display: 'flex', gap: '16px' }}>
               <div style={{ display: 'flex', flex: 1 }}>
                 <input type="date" className="input-outline" style={{ borderRadius: '8px 0 0 8px', borderRight: 'none', width: '50%' }} />
@@ -34,14 +39,7 @@ const Profit = () => {
         </div>
 
         {/* Header Text Section */}
-        <div className="receipt-header-text" style={{ marginBottom: '40px' }}>
-          <h3>বিসমিল্লাহির রাহমানির রাহিম</h3>
-          <h1>রাজধানী গার্মেন্টস</h1>
-          <p>নেছা শপিংমল এর দ্বিতীয় তলা, কালিগঞ্জ, ঝিনাইদহ</p>
-          <p>Contact No - 01716912350, 01727902498</p>
-          <p>E-mail - demo@gmail.com</p>
-          <p>Website - https://rajdhanigarmentsbd.com/</p>
-        </div>
+        
 
         {/* Center the table and print button */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -56,8 +54,8 @@ const Profit = () => {
             <table className="custom-table" style={{ border: '1px solid #d1d5db', width: '100%' }}>
               <thead>
                 <tr>
-                  <th style={{ textAlign: 'left', paddingLeft: '16px', background: '#9ca3af', color: 'white', borderRight: '1px solid #d1d5db', width: '50%' }}>TITLE</th>
-                  <th style={{ textAlign: 'right', paddingRight: '16px', background: '#9ca3af', color: 'white', width: '50%' }}>AMOUNT</th>
+                  <th style={{ textAlign: 'left', paddingLeft: '16px', background: 'var(--secondary)', color: 'white', borderRight: '1px solid #d1d5db', width: '50%' }}>TITLE</th>
+                  <th style={{ textAlign: 'right', paddingRight: '16px', background: 'var(--secondary)', color: 'white', width: '50%' }}>AMOUNT</th>
                 </tr>
               </thead>
               <tbody>

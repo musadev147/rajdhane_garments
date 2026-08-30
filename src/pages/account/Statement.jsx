@@ -1,11 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../components/PrintHeader';
 import { Printer, RotateCcw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Statement = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="premium-card">
       <div className="premium-body" style={{ padding: '40px' }}>
+        <PrintHeader />
         
         {/* Top Action Buttons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -23,21 +28,14 @@ const Statement = () => {
         </div>
 
         {/* Header Text Section */}
-        <div className="receipt-header-text" style={{ marginBottom: '40px' }}>
-          <h3>বিসমিল্লাহির রাহমানির রাহিম</h3>
-          <h1>রাজধানী গার্মেন্টস</h1>
-          <p>নেছা শপিংমল এর দ্বিতীয় তলা, কালিগঞ্জ, ঝিনাইদহ</p>
-          <p>Contact No - 01716912350, 01727902498</p>
-          <p>E-mail - demo@gmail.com</p>
-          <p>Website - https://rajdhanigarmentsbd.com/</p>
-        </div>
+        
 
         {/* Filter Section */}
         <div style={{ display: 'flex', gap: '16px', marginBottom: '40px', alignItems: 'end' }}>
           <div style={{ flex: 1 }}>
             <label className="filter-label">Client Search</label>
             <select className="input-outline">
-              <option value="">Select Client</option>
+              <option value="">{t('common.select_client')}</option>
             </select>
           </div>
           <div style={{ flex: 1 }}>
@@ -60,7 +58,7 @@ const Statement = () => {
             </div>
           </div>
           <div style={{ flex: 1 }}>
-            <button className="btn-secondary" style={{ width: '100%', height: '44px' }}>Clear Filter</button>
+            <button className="btn-secondary" style={{ width: '100%', height: '44px' }}>{t('common.clear_filter')}</button>
           </div>
         </div>
 
@@ -76,11 +74,11 @@ const Statement = () => {
             entries
           </div>
           <div className="table-controls-right" style={{ gap: '4px' }}>
-            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }} onClick={() => window.print()}><Printer size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> Print</button>
+            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }} onClick={() => window.print()}><Printer size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> {t('common.print')}</button>
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>Excel</button>
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>CSV</button>
             <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}>PDF</button>
-            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}><RotateCcw size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> Reset</button>
+            <button className="btn-blue" style={{ padding: '6px 12px', fontSize: '12px', fontWeight: 'bold' }}><RotateCcw size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }}/> {t('common.reset')}</button>
           </div>
         </div>
 
@@ -88,15 +86,15 @@ const Statement = () => {
           <thead>
             <tr>
               <th style={{ width: '60px' }}>SL</th>
-              <th>DATE</th>
+              <th>{t('common.date')}</th>
               <th>CLIENT/SUPPLIER</th>
               <th>TYPE</th>
-              <th>ACCOUNT</th>
+              <th>{t('common.account')}</th>
               <th>BANK</th>
-              <th>DESCRIPTION</th>
+              <th>{t('common.description')}</th>
               <th>CREDIT</th>
               <th>DEBIT</th>
-              <th>BALANCE</th>
+              <th>{t('common.balance')}</th>
             </tr>
           </thead>
           <tbody>

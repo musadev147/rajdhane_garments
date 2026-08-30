@@ -1,0 +1,160 @@
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../components/PrintHeader';
+import { RotateCcw, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const PurchaseInvoiceList = () => {
+  const { t } = useTranslation();
+
+  const navigate = useNavigate();
+  // Mock data matching the screenshot
+  const [purchases, setPurchases] = useState([
+    { id: 1, date: '24 Aug 2026', supplier: 'ROKSANA TOPS BONGO', product: 'ROK XL HAF 150 | 7511', buy: '90.00', sell: '150.00', qty: '25', total: '2250.00', desc: 'null' },
+    { id: 2, date: '24 Aug 2026', supplier: 'ROKSANA TOPS BONGO', product: 'ROK XXL HAF 170 | 7512', buy: '110.00', sell: '170.00', qty: '25', total: '2750.00', desc: 'null' },
+    { id: 3, date: '24 Aug 2026', supplier: 'ROKSANA TOPS BONGO', product: 'ROK HAF 3XL | 16546', buy: '140.00', sell: '220.00', qty: '25', total: '3500.00', desc: 'null' },
+    { id: 4, date: '24 Aug 2026', supplier: 'ROKSANA TOPS BONGO', product: 'ROK 5XL HAF 250 | 9087', buy: '160.00', sell: '250.00', qty: '25', total: '4000.00', desc: 'null' },
+    { id: 5, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '103.00', sell: '130.00', qty: '1343', total: '138329.00', desc: 'null' },
+    { id: 6, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '101.00', sell: '130.00', qty: '287', total: '28987.00', desc: 'null' },
+    { id: 7, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '101.00', sell: '130.00', qty: '334', total: '33734.00', desc: 'null' },
+    { id: 8, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 180 | 9760', buy: '125.00', sell: '180.00', qty: '583', total: '72875.00', desc: 'null' },
+    { id: 9, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 180 | 9760', buy: '120.00', sell: '180.00', qty: '528', total: '63360.00', desc: 'null' },
+    { id: 10, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '103.00', sell: '130.00', qty: '595', total: '61285.00', desc: 'null' },
+    { id: 11, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '100.00', sell: '130.00', qty: '895', total: '89500.00', desc: 'null' },
+    { id: 12, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 180 | 9760', buy: '135.00', sell: '180.00', qty: '472', total: '63653.00', desc: 'null' },
+    { id: 13, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 180 | 9760', buy: '125.00', sell: '180.00', qty: '410', total: '51250.00', desc: 'null' },
+    { id: 14, date: '22 Apr 2026', supplier: 'BROTHERS TRADERS 23', product: 'BR ORNA 450 | 18240', buy: '288.00', sell: '450.00', qty: '1', total: '288.00', desc: 'null' },
+    { id: 15, date: '29 Jun 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '98.00', sell: '130.00', qty: '1029', total: '100842.00', desc: 'null' },
+    { id: 16, date: '29 Jun 2026', supplier: 'BROTHERS TRADERS 23', product: 'PRINT 130 | 14', buy: '103.00', sell: '130.00', qty: '342', total: '35226.00', desc: 'null' }
+  ]);
+
+  return (
+    <div className="dashboard-content" style={{ paddingBottom: '100px', background: 'white' }}>
+        <PrintHeader />
+      
+      {/* Center Title */}
+      <div style={{ textAlign: 'center', marginBottom: '40px', marginTop: '20px', position: 'relative' }}>
+        <h2 style={{ fontFamily: 'monospace', fontSize: '24px', fontWeight: 'bold' }}>Product Wise Purchase List</h2>
+        <button 
+          onClick={() => navigate('/product/purchase/add-new')}
+          className="btn" 
+          style={{ position: 'absolute', right: '20px', top: '0', background: 'var(--success)', color: 'white', padding: '8px 16px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '6px' }}
+        >
+          <Plus size={16} /> Purchase
+        </button>
+      </div>
+
+      <div className="card-body">
+        {/* Filters */}
+        <div className="form-grid" style={{ gridTemplateColumns: '1.5fr 1fr 1fr 2fr 1fr', gap: '16px', marginBottom: '24px', alignItems: 'end' }}>
+          <div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>Supplier</div>
+            <div className="form-input floating-label" style={{ borderRadius: '4px' }}>
+              <select style={{ padding: '10px', width: '100%', color: 'var(--info)' }}>
+                <option value="" disabled selected hidden>Select Suppliers</option>
+              </select>
+            </div>
+          </div>
+          
+          <div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>Product Name</div>
+            <div className="form-input floating-label" style={{ borderRadius: '4px' }}>
+              <input type="text" placeholder=" " style={{ padding: '10px', width: '100%', color: '#94a3b8' }} />
+                <label>Product Name</label>
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>Barcode</div>
+            <div className="form-input floating-label" style={{ borderRadius: '4px' }}>
+              <input type="text" placeholder=" " style={{ padding: '10px', width: '100%', color: '#94a3b8' }} />
+                <label>Barcode</label>
+            </div>
+          </div>
+
+          <div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>{t('common.search_by_date')}</div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <div className="form-input floating-label" style={{ borderRadius: '4px', flex: 1 }}>
+                <input type="date" style={{ color: '#94a3b8', padding: '10px', width: '100%' }} />
+              </div>
+              <div className="form-input floating-label" style={{ borderRadius: '4px', flex: 1 }}>
+                <input type="date" style={{ color: '#94a3b8', padding: '10px', width: '100%' }} />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button className="btn" style={{ background: 'var(--text-muted)', color: 'white', padding: '12px', borderRadius: '4px', fontSize: '14px', width: '100%' }}>
+              Clear Filter
+            </button>
+          </div>
+        </div>
+
+        {/* Table Controls */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+          <div style={{ fontSize: '14px', color: 'var(--text-main)' }}>
+            Show 
+            <select style={{ margin: '0 8px', padding: '4px', border: '1px solid #e2e8f0', borderRadius: '4px' }}>
+              <option>100</option>
+            </select>
+            entries
+          </div>
+          <div style={{ display: 'flex', gap: '4px' }}>
+            <button className="btn" style={{ background: 'var(--primary)', color: 'white', padding: '6px 12px', fontSize: '12px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              Excel
+            </button>
+            <button className="btn" style={{ background: 'var(--primary)', color: 'white', padding: '6px 12px', fontSize: '12px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              CSV
+            </button>
+            <button className="btn" style={{ background: 'var(--primary)', color: 'white', padding: '6px 12px', fontSize: '12px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              PDF
+            </button>
+            <button className="btn" onClick={() => window.print()} style={{ background: 'var(--primary)', color: 'white', padding: '6px 12px', fontSize: '12px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              Print
+            </button>
+            <button className="btn" style={{ background: 'var(--primary)', color: 'white', padding: '6px 12px', fontSize: '12px', borderRadius: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <RotateCcw size={14} /> Reset
+            </button>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div style={{ overflowX: 'auto', border: '1px solid #e2e8f0' }}>
+          <table className="custom-table" style={{ width: '100%', minWidth: '1200px', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: 'var(--secondary)', color: 'white' }}>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px', width: '60px' }}>ID<br/>NO ↕</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>DATE</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>SUPPLIER</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>PRODUCT</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>BUYING</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>SELLING</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>QUANTITY</th>
+                <th style={{ textAlign: 'center', borderRight: '1px solid white', padding: '12px', fontSize: '11px' }}>TOTAL</th>
+                <th style={{ textAlign: 'center', padding: '12px', fontSize: '11px' }}>DESCRIPTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              {purchases.map((purchase) => (
+                <tr key={purchase.id} style={{ background: 'white', borderBottom: '1px solid #e2e8f0', fontSize: '13px' }}>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.id}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.date}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.supplier}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.product}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.buy}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.sell}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.qty}</td>
+                  <td style={{ textAlign: 'center', padding: '8px', borderRight: '1px solid #e2e8f0' }}>{purchase.total}</td>
+                  <td style={{ textAlign: 'center', padding: '8px' }}>{purchase.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PurchaseInvoiceList;

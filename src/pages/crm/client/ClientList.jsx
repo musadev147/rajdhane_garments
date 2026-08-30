@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Users, Plus, PlaySquare, Search, Calendar, FileSpreadsheet, Printer, RotateCcw, ChevronDown } from 'lucide-react';
+import PrintHeader from '../../../components/PrintHeader';
 
 const ClientList = () => {
+  const navigate = useNavigate();
+  
   const [activeAction, setActiveAction] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleAction = (id) => {
     if (activeAction === id) {
@@ -35,6 +40,11 @@ const ClientList = () => {
     }
   ];
 
+  const filteredClients = clients.filter(client => 
+    client.details.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    client.details.phone.includes(searchTerm)
+  );
+
   return (
     <div className="dashboard-content">
       <div className="chart-card">
@@ -45,10 +55,10 @@ const ClientList = () => {
             <button className="btn btn-outline" style={{ padding: '6px 12px', background: '#718096', color: 'white' }}>
               <ArrowLeft size={14} /> Go Back
             </button>
-            <button className="btn btn-outline" style={{ padding: '6px 12px', background: '#718096', color: 'white' }}>
+            <button className="btn btn-outline" onClick={() => navigate('/crm/client-group')} style={{ padding: '6px 12px', background: 'var(--table-header-bg)', color: 'white' }}>
               <Users size={14} /> Client Group
             </button>
-            <button className="btn btn-primary" style={{ padding: '6px 12px', background: 'var(--success)' }}>
+            <button className="btn btn-primary" onClick={() => navigate('/crm/client-create')} style={{ padding: '6px 12px', background: 'var(--success)' }}>
               <Plus size={14} /> Add New
             </button>
             <button className="btn btn-outline" style={{ padding: '6px 12px', background: 'white', color: 'red', border: '1px solid #e2e8f0' }}>
@@ -60,31 +70,25 @@ const ClientList = () => {
         {/* Filters */}
         <div className="form-grid" style={{ gridTemplateColumns: '1fr 1.5fr 1.5fr 1fr', marginBottom: '24px', alignItems: 'flex-end' }}>
           <div className="form-group">
-            <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search All</label>
-            <div className="form-input">
+            <div className="form-input floating-label">
               <Search size={16} className="input-icon" />
-              <input type="text" placeholder="Search All" />
+              <input 
+                type="text" 
+                placeholder=" " 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <label>Search All</label>
             </div>
           </div>
           
           <div className="form-group">
-            <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Client Group</label>
-            <div className="form-input">
+            <div className="form-input floating-label">
               <select>
-                <option>Select client group</option>
+                <option value="" disabled hidden></option>
+                <option value="test">Select client group</option>
               </select>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Date</label>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" />
-              </div>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" />
-              </div>
+              <label>Search By Client Group</label>
             </div>
           </div>
 
@@ -130,7 +134,7 @@ const ClientList = () => {
               </tr>
             </thead>
             <tbody>
-              {clients.map((client) => (
+              {filteredClients.map((client) => (
                 <tr key={client.id}>
                   <td style={{ verticalAlign: 'top', paddingTop: '16px' }}>{client.id}</td>
                   
@@ -167,7 +171,7 @@ const ClientList = () => {
                         <tr><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Sales Return</td><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>{client.stats.salesReturn}</td></tr>
                         <tr><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Money Return</td><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>{client.stats.moneyReturn}</td></tr>
                         <tr><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}><span style={{ background: '#ef4444', color: 'white', padding: '2px 6px', borderRadius: '4px' }}>Due</span></td><td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0', fontWeight: 'bold' }}>{client.stats.due}</td></tr>
-                        <tr><td style={{ padding: '6px 12px' }}>বাকি সংগ্রহের তারিখ</td><td style={{ padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}><Calendar size={12} style={{ marginRight: '4px', display: 'inline-block', verticalAlign: 'middle' }}/> {client.stats.date}</td></tr>
+                        <tr><td style={{ padding: '6px 12px' }}>Collection Date</td><td style={{ padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}><Calendar size={12} style={{ marginRight: '4px', display: 'inline-block', verticalAlign: 'middle' }}/> {client.stats.date}</td></tr>
                       </tbody>
                     </table>
                   </td>

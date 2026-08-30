@@ -1,25 +1,19 @@
 import React from 'react';
-import { Printer, RotateCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../../components/PrintHeader';
+import { ArrowLeft, Printer, RotateCcw } from 'lucide-react';
 
 const ClientStatement = () => {
   return (
     <div className="dashboard-content">
+      <PrintHeader />
       <div className="chart-card">
-        {/* Company Header Info */}
-        <div style={{ textAlign: 'center', marginBottom: '32px', color: 'var(--text-main)' }}>
-          <h4 style={{ fontSize: '16px', fontWeight: '500', marginBottom: '8px' }}>বিসমিল্লাহির রাহমানির রাহিম</h4>
-          <h1 style={{ fontSize: '32px', fontWeight: '800', marginBottom: '8px', color: '#000' }}>রাজধানী গার্মেন্টস</h1>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>নেহা শপিংমল এর দ্বিতীয় তলা, কালিগঞ্জ, ঝিনাইদহ</p>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>Contact No - 01716912350, 01727902498</p>
-          <p style={{ fontSize: '15px', marginBottom: '4px' }}>E-mail - demo@gmail.com</p>
-          <p style={{ fontSize: '15px' }}>Website - https://rajdhanigarmentsbd.com/</p>
-        </div>
 
         {/* Filters */}
         <div className="form-grid" style={{ gridTemplateColumns: '1fr 1fr auto', marginBottom: '24px', alignItems: 'flex-end', gap: '16px' }}>
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Client</label>
-            <div className="form-input">
+            <div className="form-input floating-label">
               <select>
                 <option>Select Client</option>
               </select>
@@ -29,11 +23,11 @@ const ClientStatement = () => {
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Date</label>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" />
+              <div className="form-input floating-label" style={{ flex: 1 }}>
+                <input type="date" />
               </div>
-              <div className="form-input" style={{ flex: 1 }}>
-                <input type="text" placeholder="DD/MM/YYYY" />
+              <div className="form-input floating-label" style={{ flex: 1 }}>
+                <input type="date" />
               </div>
             </div>
           </div>

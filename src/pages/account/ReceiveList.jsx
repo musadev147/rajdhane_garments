@@ -1,35 +1,39 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import PrintHeader from '../../components/PrintHeader';
 import { Plus, Play, Printer, RotateCcw, Edit, Trash2 } from 'lucide-react';
+import { useAppContext } from '../../context/AppContext';
+import { useNavigate } from 'react-router-dom';
 
 const ReceiveList = () => {
-  const tableData = [
-    { sl: 1, date: '23 Aug 2026', receiptNo: '82898', invoiceNo: '12138', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '500.00' },
-    { sl: 2, date: '23 Aug 2026', receiptNo: '82897', invoiceNo: '12137', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '500.00' },
-    { sl: 3, date: '23 Aug 2026', receiptNo: '82896', invoiceNo: '12136', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '300.00' },
-    { sl: 4, date: '23 Aug 2026', receiptNo: '82895', invoiceNo: '12135', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '1300.00' },
-    { sl: 5, date: '23 Aug 2026', receiptNo: '82894', invoiceNo: '12134', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '430.00' },
-    { sl: 6, date: '23 Aug 2026', receiptNo: '82893', invoiceNo: '12133', client: 'Name: C.CASTOMER\nNumber: 01', type: 'Invoice', desc: '', amount: '170.00' },
-  ];
+  const { t } = useTranslation();
+
+  const { state } = useAppContext();
+  const { transactions, clients } = state;
+  const navigate = useNavigate();
+
+  // Filter only Receive transactions
+  const receives = transactions.filter(t => t.type === 'Receive');
+
+  const getClientDetails = (clientId) => {
+    const client = clients.find(c => c.id === Number(clientId));
+    if (!client) return 'Unknown Client';
+    return `Name: ${client.name}\nNumber: ${client.phone}`;
+  };
 
   return (
     <div className="premium-card">
       <div className="premium-body" style={{ padding: '40px' }}>
+        <PrintHeader />
         
         {/* Header Text Section */}
-        <div className="receipt-header-text">
-          <h3>বিসমিল্লাহির রাহমানির রাহিম</h3>
-          <h1>রাজধানী গার্মেন্টস</h1>
-          <p>নেছা শপিংমল এর দ্বিতীয় তলা, কালিগঞ্জ, ঝিনাইদহ</p>
-          <p>Contact No - 01716912350, 01727902498</p>
-          <p>E-mail - demo@gmail.com</p>
-          <p>Website - https://rajdhanigarmentsbd.com/</p>
-        </div>
+        
 
         {/* Title and Top Action Buttons */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
           <h2 style={{ fontSize: '24px', fontWeight: '400', color: '#4b5563', margin: 0 }}>Receive List</h2>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <button className="btn-green">
+            <button className="btn-green" onClick={() => navigate('/account/receive-create')}>
               <Plus size={16} /> Add New Receive
             </button>
             <button className="btn-youtube">
@@ -43,22 +47,24 @@ const ReceiveList = () => {
         {/* Filter Section */}
         <div className="filter-grid">
           <div>
-            <label className="filter-label">Search By Client</label>
+            <label className="filter-label">{t('common.search_by_client')}</label>
             <select className="input-outline">
-              <option value="">Select Client</option>
-              <option value="1">Client 1</option>
+              <option value="">{t('common.select_client')}</option>
+              {clients.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
             </select>
           </div>
           <div className="input-badge-top">
             <span className="badge-top-label">Invoice No</span>
-            <input type="text" className="input-outline" placeholder="Invoice No" />
+            <input type="text" className="input-outline" placeholder=" " />
+                <label>Invoice No</label>
           </div>
           <div className="input-badge-top">
             <span className="badge-top-label">Receipt No</span>
-            <input type="text" className="input-outline" placeholder="Receipt No" />
+            <input type="text" className="input-outline" placeholder=" " />
+                <label>Receipt No</label>
           </div>
           <div>
-            <label className="filter-label">Search By Date</label>
+            <label className="filter-label">{t('common.search_by_date')}</label>
             <div style={{ display: 'flex' }}>
               <input type="date" className="input-outline" style={{ borderRadius: '8px 0 0 8px', borderRight: 'none' }} />
               <input type="date" className="input-outline" style={{ borderRadius: '0 8px 8px 0' }} />
@@ -67,7 +73,7 @@ const ReceiveList = () => {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '40px' }}>
-          <button className="btn-secondary">Clear Filter</button>
+          <button className="btn-secondary">{t('common.clear_filter')}</button>
         </div>
 
         {/* Table Section */}
@@ -82,36 +88,36 @@ const ReceiveList = () => {
             entries
           </div>
           <div className="table-controls-right">
-            <button className="btn-blue" onClick={() => window.print()}><Printer size={16} /> Print</button>
-            <button className="btn-blue"><RotateCcw size={16} /> Reset</button>
+            <button className="btn-blue" onClick={() => window.print()}><Printer size={16} /> {t('common.print')}</button>
+            <button className="btn-blue"><RotateCcw size={16} /> {t('common.reset')}</button>
           </div>
         </div>
 
         <table className="custom-table">
           <thead>
             <tr>
-              <th>SL<span style={{ fontSize: '10px', verticalAlign: 'super' }}>↑↓</span></th>
-              <th>DATE</th>
+              <th>{t('common.sl')}<span style={{ fontSize: '10px', verticalAlign: 'super' }}>↑↓</span></th>
+              <th>{t('common.date')}</th>
               <th>RECEIPT NO</th>
               <th>INVOICE NO</th>
               <th>CLIENT</th>
               <th>TYPE</th>
-              <th>DESCRIPTION</th>
-              <th>AMOUNT</th>
+              <th>{t('common.description')}</th>
+              <th>{t('common.amount')}</th>
               <th>MONEY RECEIPT</th>
-              <th>ACTION</th>
+              <th>{t('common.action')}</th>
             </tr>
           </thead>
           <tbody>
-            {tableData.map((row, idx) => (
-              <tr key={idx}>
-                <td>{row.sl}</td>
-                <td>{row.date}</td>
-                <td>{row.receiptNo}</td>
-                <td>{row.invoiceNo}</td>
-                <td style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>{row.client}</td>
+            {receives.map((row, idx) => (
+              <tr key={row.id}>
+                <td>{idx + 1}</td>
+                <td>{row.date.split('T')[0]}</td>
+                <td>{row.id.toString().slice(-5)}</td>
+                <td>N/A</td>
+                <td style={{ whiteSpace: 'pre-line', textAlign: 'center' }}>{getClientDetails(row.clientId)}</td>
                 <td>{row.type}</td>
-                <td>{row.desc}</td>
+                <td>{row.description}</td>
                 <td>{row.amount}</td>
                 <td>
                   <button className="action-btn-sm print"><Printer size={16} /></button>
@@ -122,6 +128,11 @@ const ReceiveList = () => {
                 </td>
               </tr>
             ))}
+            {receives.length === 0 && (
+              <tr>
+                <td colSpan="10" style={{ textAlign: 'center', padding: '20px' }}>No receives found. Add one above!</td>
+              </tr>
+            )}
           </tbody>
         </table>
 

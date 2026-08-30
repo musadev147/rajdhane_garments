@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Users, Plus, PlaySquare, Search, FileSpreadsheet, Printer, RotateCcw, ChevronDown, Eye, Edit, Trash2, DollarSign, FileText, FileBarChart } from 'lucide-react';
+import PrintHeader from '../../../components/PrintHeader';
 
 const SupplierList = () => {
   const [activeAction, setActiveAction] = useState(null);
@@ -71,13 +72,14 @@ const SupplierList = () => {
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px' }}>
+      <PrintHeader />
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2 className="card-title">SUPPLIER LIST</h2>
         <div className="card-actions">
           <button className="btn btn-outline" style={{ padding: '6px 12px', background: '#718096', color: 'white' }}>
             <ArrowLeft size={14} /> Go Back
           </button>
-          <button className="btn btn-outline" style={{ padding: '6px 12px', background: '#718096', color: 'white' }}>
+          <button className="btn btn-outline" style={{ padding: '6px 12px', background: 'var(--table-header-bg)', color: 'white' }} onClick={() => navigate('/crm/supplier-group')}>
             <Users size={14} /> Supplier Group
           </button>
           <button className="btn btn-primary" style={{ padding: '6px 12px', background: 'var(--success)' }}>
@@ -94,14 +96,15 @@ const SupplierList = () => {
         <div className="form-grid" style={{ gridTemplateColumns: '1fr 1fr 1fr 1fr', marginBottom: '24px', alignItems: 'flex-end', gap: '16px' }}>
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px', color: 'var(--primary)' }}>Search All</label>
-            <div className="form-input">
-              <input type="text" placeholder="Search All" />
+            <div className="form-input floating-label">
+              <input type="text" placeholder=" " />
+                <label>Search All</label>
             </div>
           </div>
 
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Supplier Group</label>
-            <div className="form-input">
+            <div className="form-input floating-label">
               <select>
                 <option>Select a group</option>
               </select>
@@ -111,11 +114,11 @@ const SupplierList = () => {
           <div className="form-group">
             <label style={{ fontSize: '12px', fontWeight: '600', marginBottom: '8px' }}>Search By Date</label>
             <div style={{ display: 'flex', gap: '8px' }}>
-              <div className="form-input" style={{ flex: 1, padding: '0 8px' }}>
-                <input type="text" placeholder="DD/MM/YYYY" style={{ color: '#94a3b8' }} />
+              <div className="form-input floating-label" style={{ flex: 1, padding: '0 8px' }}>
+                <input type="date" style={{ color: '#94a3b8' }} />
               </div>
-              <div className="form-input" style={{ flex: 1, padding: '0 8px' }}>
-                <input type="text" placeholder="DD/MM/YYYY" style={{ color: '#94a3b8' }} />
+              <div className="form-input floating-label" style={{ flex: 1, padding: '0 8px' }}>
+                <input type="date" style={{ color: '#94a3b8' }} />
               </div>
             </div>
           </div>
@@ -256,11 +259,11 @@ const SupplierList = () => {
                         zIndex: 100,
                         textAlign: 'left'
                       }}>
-                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><Eye size={14} /> View</div>
-                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><Edit size={14} /> Edit</div>
-                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><Trash2 size={14} /> Delete</div>
-                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><DollarSign size={14} /> Payment</div>
-                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><FileText size={14} /> Payment Report</div>
+                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }} onClick={() => navigate('/crm/supplier-statement')}><Eye size={14} /> View</div>
+                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }} onClick={() => alert("Edit supplier feature coming soon!")}><Edit size={14} /> Edit</div>
+                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }} onClick={() => alert("Delete supplier feature coming soon!")}><Trash2 size={14} /> Delete</div>
+                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }} onClick={() => navigate('/account/supplier-payment')}><DollarSign size={14} /> Payment</div>
+                        <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }} onClick={() => navigate('/crm/supplier-statement')}><FileText size={14} /> Payment Report</div>
                         <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><FileBarChart size={14} /> Purchase Report</div>
                         <div className="action-item" style={{ padding: '8px 16px', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '13px' }}><FileText size={14} /> Statement</div>
                       </div>
