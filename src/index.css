@@ -543,13 +543,11 @@ body {
     display: none !important;
   }
   
-  /* Specifically hide action columns */
   th:last-child,
   td:last-child:has(button) {
     display: none !important;
   }
 }
-.
 
 /* Drawer Modals */
 .drawer-overlay {
