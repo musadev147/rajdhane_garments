@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { Settings, Plus, Barcode, Calendar } from 'lucide-react';
+import { useAppContext } from '../../context/AppContext';
+import AddOptionModal from '../../components/AddOptionModal';
 
 const PurchaseCreate = () => {
   const { t } = useTranslation();
@@ -12,10 +14,28 @@ const PurchaseCreate = () => {
     barcode: '',
     product: ''
   });
+  
+  const { state, addSupplier } = useAppContext();
+  const suppliers = state?.suppliers || [];
+  
+  const [isSupplierModalOpen, setIsSupplierModalOpen] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+  
+  const handleAddSupplier = (name) => {
+    addSupplier({ name, phone: '', address: '', company: name, group: 'Local', due: 0 });
+    setIsSupplierModalOpen(false);
+  };
+  
+  const handleAddProduct = (name) => {
+    console.log("Add product:", name);
+    // TODO: Implement addProduct in context if needed
+    setIsProductModalOpen(false);
+  };
+
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px' }}>
@@ -41,8 +61,11 @@ const PurchaseCreate = () => {
                 <div className="input-with-append">
                   <select name="supplier" value={formData.supplier} onChange={handleChange} style={{ padding: '14px', flex: 1, border: '1px solid #e2e8f0', borderRadius: '4px 0 0 4px', outline: 'none', appearance: 'none', background: 'white' }}>
                     <option value="" disabled hidden>Select Suppliers</option>
+                    {suppliers.map(sup => (
+                      <option key={sup.id} value={sup.id}>{sup.name}</option>
+                    ))}
                   </select>
-                  <button type="button" className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
+                  <button type="button" onClick={() => setIsSupplierModalOpen(true)} className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
                 </div>
               </div>
 
@@ -73,7 +96,7 @@ const PurchaseCreate = () => {
                   <select name="product" value={formData.product} onChange={handleChange} style={{ padding: '14px', flex: 1, border: '1px solid #e2e8f0', borderRadius: '4px 0 0 4px', outline: 'none', appearance: 'none', background: 'white' }}>
                     <option value="" disabled hidden>Select Product</option>
                   </select>
-                  <button type="button" className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
+                  <button type="button" onClick={() => setIsProductModalOpen(true)} className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
                 </div>
               </div>
 
@@ -120,6 +143,22 @@ const PurchaseCreate = () => {
           </form>
         </div>
       </div>
+      
+      <AddOptionModal 
+        isOpen={isSupplierModalOpen}
+        onClose={() => setIsSupplierModalOpen(false)}
+        onSave={handleAddSupplier}
+        title="Add Supplier"
+        label="Supplier Name"
+      />
+
+      <AddOptionModal 
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
+        onSave={handleAddProduct}
+        title="Add Product"
+        label="Product Name"
+      />
     </div>
   );
 };

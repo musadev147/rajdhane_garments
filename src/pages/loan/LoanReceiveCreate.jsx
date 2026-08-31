@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { List, Play, Plus, Calendar, DollarSign, FileText, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
+import AddOptionModal from '../../components/AddOptionModal';
 
 
 const LoanReceiveCreate = () => {
@@ -19,6 +20,10 @@ const LoanReceiveCreate = () => {
     categoryId: '',
     sms: false
   });
+  
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -60,7 +65,7 @@ const LoanReceiveCreate = () => {
                     <option value="1">CASH BASHI</option>
                     <option value="2">LAL MIYA //LATA GARAJ</option>
                   </select>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsClientModalOpen(true)}><Plus size={20} /></button>
                 </div>
               </div>
               <div className="form-col" style={{ position: 'relative' }}>
@@ -78,7 +83,7 @@ const LoanReceiveCreate = () => {
                     <option value="1">Cash</option>
                     <option value="2">Bank</option>
                   </select>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
                 </div>
               </div>
               <div className="form-col">
@@ -102,7 +107,7 @@ const LoanReceiveCreate = () => {
                     <option value="1">Advance</option>
                     <option value="2">Return</option>
                   </select>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsCategoryModalOpen(true)}><Plus size={20} /></button>
                 </div>
               </div>
             </div>
@@ -133,6 +138,28 @@ const LoanReceiveCreate = () => {
           </form>
         </div>
       </div>
+
+      <AddOptionModal 
+        isOpen={isClientModalOpen}
+        onClose={() => setIsClientModalOpen(false)}
+        onSave={(val) => { console.log('Add Client', val); setIsClientModalOpen(false); }}
+        title="Add Client"
+        label="Client Name"
+      />
+      <AddOptionModal 
+        isOpen={isAccountModalOpen}
+        onClose={() => setIsAccountModalOpen(false)}
+        onSave={(val) => { console.log('Add Account', val); setIsAccountModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
+      <AddOptionModal 
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        onSave={(val) => { console.log('Add Category', val); setIsCategoryModalOpen(false); }}
+        title="Add Category"
+        label="Category Name"
+      />
     </div>
   );
 };

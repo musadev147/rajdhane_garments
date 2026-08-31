@@ -4,6 +4,7 @@ import { List, Play, Plus, Calendar, Type, DollarSign } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
+import AddOptionModal from '../../components/AddOptionModal';
 
 
 const TransferCreate = () => {
@@ -20,6 +21,8 @@ const TransferCreate = () => {
     description: '',
     amount: ''
   });
+  
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -81,7 +84,7 @@ const TransferCreate = () => {
                     <option key={acc.id} value={acc.id}>{acc.name} ({acc.balance})</option>
                   ))}
                 </select>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
             <div className="form-col">
@@ -92,7 +95,7 @@ const TransferCreate = () => {
                     <option key={acc.id} value={acc.id}>{acc.name} ({acc.balance})</option>
                   ))}
                 </select>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
             <div className="form-col" style={{ position: 'relative' }}>
@@ -123,6 +126,14 @@ const TransferCreate = () => {
           </div>
         </form>
       </div>
+
+      <AddOptionModal 
+        isOpen={isAccountModalOpen}
+        onClose={() => setIsAccountModalOpen(false)}
+        onSave={(val) => { console.log('Add Account', val); setIsAccountModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
     </div>
   );
 };

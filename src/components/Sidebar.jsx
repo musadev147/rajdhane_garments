@@ -226,10 +226,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 
                 {receiveOpen && (
                   <div>
-                    <NavLink to="/account/receive-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
+                    <NavLink to="/account/receive-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new')}
                     </NavLink>
-                    <NavLink to="/account/receive-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/receive-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.receive_list')}
                     </NavLink>
                   </div>
@@ -251,16 +251,16 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 
                 {expenseOpen && (
                   <div>
-                    <NavLink to="/account/expense-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
+                    <NavLink to="/account/expense-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> Add New
                     </NavLink>
-                    <NavLink to="/account/expense-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/expense-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> Expense
                     </NavLink>
-                    <NavLink to="/account/supplier-payment" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/supplier-payment" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_payment')}
                     </NavLink>
-                    <NavLink to="/account/money-return" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/money-return" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.money_return')}
                     </NavLink>
                   </div>
@@ -281,16 +281,16 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 
                 {subAccountOpen && (
                   <div>
-                    <NavLink to="/account/account-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
+                    <NavLink to="/account/account-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.account_create')}
                     </NavLink>
-                    <NavLink to="/account/account-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/account-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.account_list')}
                     </NavLink>
-                    <NavLink to="/account/account-balance" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/account-balance" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.account_balance')}
                     </NavLink>
-                    <NavLink to="/account/statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.statement')}
                     </NavLink>
                   </div>
@@ -311,10 +311,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 
                 {transferOpen && (
                   <div>
-                    <NavLink to="/account/transfer-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
+                    <NavLink to="/account/transfer-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.transfer_create')}
                     </NavLink>
-                    <NavLink to="/account/transfer-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/account/transfer-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.transfer_list')}
                     </NavLink>
                   </div>
@@ -873,12 +873,12 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
         </div>
 
         {/* Softhost It Support */}
-        <div className="nav-item" style={{ cursor: 'pointer' }}>
+        <NavLink to="/support" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={closeSidebar}>
           <div className="nav-item-content">
             <HelpCircle size={20} />
             <span>Softhost It Support</span>
           </div>
-        </div>
+        </NavLink>
 
         {/* Sign Out */}
         <div className="nav-item" style={{ cursor: 'pointer' }}>

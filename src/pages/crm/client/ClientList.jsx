@@ -59,7 +59,7 @@ const ClientList = () => {
               <Users size={14} /> Client Group
             </button>
             <button className="btn btn-primary" onClick={() => navigate('/crm/client-create')} style={{ padding: '6px 12px', background: 'var(--success)' }}>
-              <Plus size={14} /> Add New
+              <Plus size={14} /> Add Client
             </button>
             <button className="btn btn-outline" style={{ padding: '6px 12px', background: 'white', color: 'red', border: '1px solid #e2e8f0' }}>
               <PlaySquare size={14} /> YouTube

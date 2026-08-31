@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Settings, List, Users, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAppContext } from '../../../context/AppContext';
+import AddOptionModal from '../../../components/AddOptionModal';
 
 const SupplierCreate = () => {
+  const navigate = useNavigate();
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
+  const { state, addSupplierGroup } = useAppContext();
+  const groups = state?.supplierGroups || [];
+
+  const handleAddGroup = (groupName) => {
+    const now = new Date();
+    const date = `${now.getDate()} ${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear()}`;
+    addSupplierGroup({ name: groupName.toUpperCase(), date });
+  };
+
   return (
     <div className="dashboard-content">
       <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -77,10 +91,15 @@ const SupplierCreate = () => {
               <div className="input-group">
                 <div className="form-input floating-label">
                   <select>
-                    <option>Select a group</option>
+                    <option value="" disabled hidden></option>
+                    <option value="test">Select a group</option>
+                    {groups.map(group => (
+                      <option key={group.id} value={group.name}>{group.name}</option>
+                    ))}
                   </select>
+                  <label>Select a group</label>
                 </div>
-                <button type="button" className="btn-append">
+                <button type="button" className="btn-append" onClick={() => setIsGroupModalOpen(true)}>
                   <Plus size={20} />
                 </button>
               </div>
@@ -103,6 +122,14 @@ const SupplierCreate = () => {
           </button>
         </form>
       </div>
+
+      <AddOptionModal 
+        isOpen={isGroupModalOpen}
+        onClose={() => setIsGroupModalOpen(false)}
+        onSave={handleAddGroup}
+        title="Add Supplier Group"
+        label="Group Name"
+      />
     </div>
   );
 };

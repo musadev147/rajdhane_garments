@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { ArrowLeft, Users, Plus, PlaySquare, Search, FileSpreadsheet, Printer, RotateCcw, ChevronDown, Eye, Edit, Trash2, DollarSign, FileText, FileBarChart } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../../components/PrintHeader';
 
 const SupplierList = () => {
+  const navigate = useNavigate();
   const [activeAction, setActiveAction] = useState(null);
 
   const toggleAction = (id) => {
@@ -82,8 +84,8 @@ const SupplierList = () => {
           <button className="btn btn-outline" style={{ padding: '6px 12px', background: 'var(--table-header-bg)', color: 'white' }} onClick={() => navigate('/crm/supplier-group')}>
             <Users size={14} /> Supplier Group
           </button>
-          <button className="btn btn-primary" style={{ padding: '6px 12px', background: 'var(--success)' }}>
-            <Plus size={14} /> Add
+          <button className="btn btn-primary" onClick={() => navigate('/crm/supplier-create')} style={{ padding: '6px 12px', background: 'var(--success)' }}>
+            <Plus size={14} /> Add Supplier
           </button>
           <button className="btn btn-primary" style={{ padding: '6px 12px', background: '#ef4444' }}>
             <span style={{ fontWeight: 'bold' }}>▶ YouTube</span>

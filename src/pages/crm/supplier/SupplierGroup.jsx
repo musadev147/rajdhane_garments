@@ -4,6 +4,7 @@ import PrintHeader from '../../../components/PrintHeader';
 import { List, Plus, FileSpreadsheet, Printer, RotateCcw, RefreshCw, Edit, Trash2, X } from 'lucide-react';
 import { useAppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import AddOptionModal from '../../../components/AddOptionModal';
 
 const SupplierGroup = () => {
   const { t } = useTranslation();
@@ -15,16 +16,12 @@ const SupplierGroup = () => {
   const navigate = useNavigate();
   const groups = state.supplierGroups || [];
 
-  const handleAddGroup = () => {
-    if (!newGroupName.trim()) {
-      alert('Please enter a group name');
-      return;
-    }
+  const handleAddGroup = (groupName) => {
+    if (!groupName || !groupName.trim()) return;
     const now = new Date();
     const date = `${now.getDate()} ${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear()}`;
     
-    addSupplierGroup({ name: newGroupName.toUpperCase(), date });
-    setNewGroupName('');
+    addSupplierGroup({ name: groupName.toUpperCase(), date });
     setIsModalOpen(false);
   };
 
@@ -120,72 +117,13 @@ const SupplierGroup = () => {
         </div>
       </div>
 
-      {/* Add New Group Modal */}
-      {isModalOpen && (
-        <div className="drawer-overlay">
-          <div className="drawer-content">
-            {/* Modal Header */}
-            <div className="drawer-header" style={{ background: 'var(--card-header-bg)' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text-main)', margin: 0 }}>Add New Supplier Group</h3>
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div style={{ padding: '24px' }}>
-              <div className="form-group" style={{ marginBottom: '24px' }}>
-                <label style={{ display: 'block', fontSize: '14px', fontWeight: '500', color: 'var(--text-main)', marginBottom: '8px' }}>
-                  Group Name
-                </label>
-                <input 
-                  type="text" 
-                  value={newGroupName}
-                  onChange={(e) => setNewGroupName(e.target.value)}
-                  placeholder="Enter supplier group name..." 
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    borderRadius: '8px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '14px',
-                    outline: 'none',
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
-                  onBlur={(e) => e.target.style.borderColor = 'var(--card-border)'}
-                />
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div style={{
-              padding: '16px 24px',
-              borderTop: '1px solid #e2e8f0',
-              background: 'var(--card-header-bg)',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              gap: '12px'
-            }}>
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                style={{ padding: '10px 20px', borderRadius: '6px', border: '1px solid #cbd5e1', background: 'white', color: '#475569', fontWeight: '500', cursor: 'pointer' }}
-              >
-                Close
-              </button>
-              <button 
-                onClick={handleAddGroup}
-                style={{ padding: '10px 20px', borderRadius: '6px', border: 'none', background: 'var(--primary)', color: 'white', fontWeight: '500', cursor: 'pointer' }}
-              >
-                Save changes
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AddOptionModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddGroup}
+        title="Add New Supplier Group"
+        label="Group Name"
+      />
     </div>
   );
 };

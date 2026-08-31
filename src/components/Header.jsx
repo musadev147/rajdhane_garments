@@ -47,6 +47,7 @@ const Header = ({ toggleSidebar }) => {
       
       <div className="header-nav-scroll" style={{ 
         display: 'flex', 
+        justifyContent: 'center',
         gap: '6px', 
         alignItems: 'center',
         flex: 1, 

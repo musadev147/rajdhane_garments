@@ -4,6 +4,7 @@ import PrintHeader from '../../../components/PrintHeader';
 import { List, Plus, FileSpreadsheet, FileText, Printer, RotateCcw, RefreshCw, Edit, Trash2, X, Users } from 'lucide-react';
 import { useAppContext } from '../../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import AddOptionModal from '../../../components/AddOptionModal';
 
 const ClientGroup = () => {
   const { t } = useTranslation();
@@ -15,16 +16,12 @@ const ClientGroup = () => {
   const navigate = useNavigate();
   const groups = state.clientGroups || [];
 
-  const handleAddGroup = () => {
-    if (!newGroupName.trim()) {
-      alert('Please enter a group name');
-      return;
-    }
+  const handleAddGroup = (groupName) => {
+    if (!groupName || !groupName.trim()) return;
     const now = new Date();
     const createdAt = `${now.getDate()} ${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear()}`;
     
-    addClientGroup({ name: newGroupName.toUpperCase(), createdAt });
-    setNewGroupName('');
+    addClientGroup({ name: groupName.toUpperCase(), createdAt });
     setIsModalOpen(false);
   };
 
@@ -101,65 +98,13 @@ const ClientGroup = () => {
         </div>
       </div>
 
-      {/* Modal Overlay */}
-      {isModalOpen && (
-        <div className="drawer-overlay">
-          <div className="drawer-content">
-            {/* Modal Header */}
-            <div className="drawer-header">
-              <h3 style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-main)' }}>Add New Client Group</h3>
-              <button 
-                onClick={() => setIsModalOpen(false)}
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#94a3b8' }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            
-            {/* Modal Body */}
-            <div style={{ padding: '24px' }}>
-              <div className="form-group" style={{ position: 'relative' }}>
-                {/* Custom Label overlay matching screenshot */}
-                <div style={{ 
-                  position: 'absolute', 
-                  top: '-12px', 
-                  left: '12px', 
-                  background: 'var(--info)', 
-                  color: 'white', 
-                  padding: '2px 8px', 
-                  borderRadius: '4px', 
-                  fontSize: '12px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '4px',
-                  zIndex: 1
-                }}>
-                  <Users size={12} /> Group Name
-                </div>
-                <div className="form-input floating-label" style={{ height: '56px' }}>
-                  <input 
-                    type="text" 
-                    style={{ paddingLeft: '8px' }} 
-                    value={newGroupName}
-                    onChange={(e) => setNewGroupName(e.target.value)}
-                    placeholder="Enter Group Name"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px', padding: '16px 24px', borderTop: '1px solid #e2e8f0' }}>
-              <button className="btn" style={{ background: 'var(--success)', color: 'white', padding: '8px 16px', borderRadius: '4px', fontWeight: '500' }} onClick={handleAddGroup}>
-                Add Group
-              </button>
-              <button className="btn" style={{ background: 'var(--danger)', color: 'white', padding: '8px 16px', borderRadius: '4px', fontWeight: '500' }} onClick={() => setIsModalOpen(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <AddOptionModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSave={handleAddGroup}
+        title="Add New Client Group"
+        label="Group Name"
+      />
     </div>
   );
 };

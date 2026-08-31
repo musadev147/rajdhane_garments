@@ -92,52 +92,52 @@ const appReducer = (state, action) => {
     case 'ADD_CLIENT':
       return {
         ...state,
-        clients: [...state.clients, { id: Date.now(), ...action.payload }]
+        clients: [...(state.clients || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_CLIENT_GROUP':
       return {
         ...state,
-        clientGroups: [{ id: Date.now(), ...action.payload }, ...state.clientGroups]
+        clientGroups: [{ id: Date.now(), ...action.payload }, ...(state.clientGroups || [])]
       };
     case 'ADD_SUPPLIER_GROUP':
       return {
         ...state,
-        supplierGroups: [{ id: Date.now(), ...action.payload }, ...state.supplierGroups]
+        supplierGroups: [{ id: Date.now(), ...action.payload }, ...(state.supplierGroups || [])]
       };
     case 'ADD_SUPPLIER':
       return {
         ...state,
-        suppliers: [...state.suppliers, { id: Date.now(), ...action.payload }]
+        suppliers: [...(state.suppliers || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_LOAN_CLIENT':
       return {
         ...state,
-        loanClients: [...state.loanClients, { id: Date.now(), ...action.payload }]
+        loanClients: [...(state.loanClients || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_ACCOUNT':
       return {
         ...state,
-        accounts: [...state.accounts, { id: Date.now(), ...action.payload }]
+        accounts: [...(state.accounts || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_TRANSACTION':
       return {
         ...state,
-        transactions: [...state.transactions, { id: Date.now(), ...action.payload }]
+        transactions: [...(state.transactions || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_EXPENSE':
       return {
         ...state,
-        expenses: [...state.expenses, { id: Date.now(), ...action.payload }]
+        expenses: [...(state.expenses || []), { id: Date.now(), ...action.payload }]
       };
     case 'ADD_TRANSFER':
       return {
         ...state,
-        transfers: [...state.transfers, { id: Date.now(), ...action.payload }]
+        transfers: [...(state.transfers || []), { id: Date.now(), ...action.payload }]
       };
     case 'UPDATE_CLIENT_DUE':
       return {
         ...state,
-        clients: state.clients.map(client => 
+        clients: (state.clients || []).map(client => 
           client.id === action.payload.clientId 
             ? { ...client, due: client.due + action.payload.amount }
             : client
@@ -146,7 +146,7 @@ const appReducer = (state, action) => {
     case 'UPDATE_SUPPLIER_DUE':
       return {
         ...state,
-        suppliers: state.suppliers.map(sup => 
+        suppliers: (state.suppliers || []).map(sup => 
           sup.id === action.payload.supplierId 
             ? { ...sup, due: sup.due + action.payload.amount }
             : sup
@@ -155,7 +155,7 @@ const appReducer = (state, action) => {
     case 'UPDATE_ACCOUNT_BALANCE':
       return {
         ...state,
-        accounts: state.accounts.map(acc => 
+        accounts: (state.accounts || []).map(acc => 
           acc.id === action.payload.accountId 
             ? { ...acc, balance: acc.balance + action.payload.amount }
             : acc

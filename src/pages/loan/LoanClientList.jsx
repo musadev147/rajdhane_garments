@@ -50,10 +50,9 @@ const LoanClientList = () => {
         
         {/* Filters */}
         <div className="filter-section" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1.5fr 1fr', gap: '16px', marginBottom: '24px' }}>
-          <div>
-            <label className="filter-label" style={{ display: 'block', marginBottom: '8px' }}>Search All</label>
-            <input type="text" className="input-outline" placeholder=" " style={{ width: '100%', height: '40px', padding: '0 12px', border: '1px solid #0ea5e9', borderRadius: '4px' }} />
-                <label>Search All</label>
+          <div className="input-badge-top" style={{ marginTop: '22px' }}>
+            <span className="badge-top-label">Search All</span>
+            <input type="text" className="input-outline" placeholder="Search All" style={{ width: '100%', height: '40px', padding: '0 12px', border: '1px solid #0ea5e9', borderRadius: '4px' }} />
           </div>
           <div>
             <label className="filter-label" style={{ display: 'block', marginBottom: '8px' }}>Search By Client Group</label>
@@ -120,43 +119,44 @@ const LoanClientList = () => {
                         <div style={{ position: 'absolute', top: '10%', left: '10%', width: '80%', height: '80%', borderRadius: '50%', border: '1px solid #e2e8f0' }}></div>
                         <div style={{ position: 'absolute', top: '20%', left: '20%', width: '60%', height: '60%', borderRadius: '50%', border: '1px solid #e2e8f0' }}></div>
                       </div>
-                      <div style={{ display: 'flex' }}>
-                        <button style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '4px 8px', fontSize: '11px', borderRadius: '4px 0 0 4px', cursor: 'pointer' }}>Choose a</button>
-                        <button style={{ background: 'var(--text-muted)', color: 'white', border: 'none', padding: '4px 8px', fontSize: '11px', borderRadius: '0 4px 4px 0', cursor: 'pointer' }}>{t('common.save')}</button>
+                      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
+                        <button style={{ background: '#3b82f6', color: 'white', border: 'none', padding: '6px 8px', fontSize: '11px', borderTopLeftRadius: '4px', borderBottomLeftRadius: '4px', cursor: 'pointer' }}>Choose a file</button>
+                        <button style={{ background: '#64748b', color: 'white', border: 'none', padding: '6px 8px', fontSize: '11px', borderTopRightRadius: '4px', borderBottomRightRadius: '4px', cursor: 'pointer' }}>{t('common.save')}</button>
                       </div>
                     </div>
                   </td>
                   
                   {/* Client Details Column */}
                   <td style={{ padding: '16px', borderRight: '1px solid #d1d5db', verticalAlign: 'top' }}>
-                    <div style={{ fontSize: '13px', lineHeight: '1.6', color: '#000', fontWeight: '600' }}>
-                      <div style={{ display: 'flex' }}><span style={{ width: '90px' }}>Name</span><span>: {client.name}</span></div>
-                      <div style={{ display: 'flex' }}><span style={{ width: '90px' }}>Phone</span><span>: {client.phone}</span></div>
-                      {client.group && <div style={{ display: 'flex' }}><span style={{ width: '90px' }}>Client Group</span><span>: {client.group}</span></div>}
-                      {client.address && <div style={{ display: 'flex' }}><span style={{ width: '90px' }}>Address</span><span>: {client.address}</span></div>}
-                      <div style={{ display: 'flex' }}><span style={{ width: '90px' }}>Status</span><span>: Activated</span></div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '80px 10px 1fr', gap: '4px', fontSize: '13px', color: '#000', fontWeight: '600' }}>
+                      <div>Name</div><div>:</div><div>{client.name}</div>
+                      <div>Phone</div><div>:</div><div>{client.phone}</div>
+                      {client.group && <><div>Client Group</div><div>:</div><div>{client.group}</div></>}
+                      {client.address && <><div>Address</div><div>:</div><div>{client.address}</div></>}
+                      <div>Status</div><div>:</div><div>Activated</div>
+                      {client.createdAt && <><div>Created At</div><div>:</div><div>{client.createdAt}</div></>}
                     </div>
                   </td>
 
                   {/* Details Column (Nested Table) */}
                   <td style={{ padding: '16px', borderRight: '1px solid #d1d5db', verticalAlign: 'top' }}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #6b7280', fontSize: '13px', color: '#000', fontWeight: '500' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px', color: '#000', fontWeight: '500' }}>
                       <tbody>
                         <tr>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px', width: '65%' }}>Previous Due</td>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px' }}>{client.previousDue} ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Previous Due</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>{client.previousDue || '0.00'} ৳</td>
                         </tr>
                         <tr>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px' }}>Loan Payment</td>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px' }}>0 ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Loan Payment</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>0 ৳</td>
                         </tr>
                         <tr>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px' }}>Loan Receive</td>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px' }}>0 ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Loan Receive</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>0 ৳</td>
                         </tr>
                         <tr>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px', fontWeight: '700' }}>Balance</td>
-                          <td style={{ border: '1px solid #6b7280', padding: '4px 8px', fontWeight: '700' }}>{client.due} ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', fontWeight: 'bold' }}>Balance</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0', fontWeight: 'bold' }}>{client.due} ৳</td>
                         </tr>
                       </tbody>
                     </table>

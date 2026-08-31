@@ -4,13 +4,13 @@ import { Settings, List, Layers, Play, X, Plus, Calendar, BookOpen, DollarSign, 
 import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
-
+import AddOptionModal from '../../components/AddOptionModal';
 
 const ReceiveCreate = () => {
   const { t } = useTranslation();
 
-  const { state, recordReceive } = useAppContext();
-  const { clients, accounts } = state;
+  const { state, recordReceive, addClient, addCategory, addAccount } = useAppContext();
+  const { clients, accounts, categories } = state;
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -21,6 +21,10 @@ const ReceiveCreate = () => {
     amount: '',
     accountId: ''
   });
+  
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -78,7 +82,7 @@ const ReceiveCreate = () => {
                     <option key={client.id} value={client.id}>{client.name}</option>
                   ))}
                 </select>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsClientModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
             <div className="form-col">
@@ -88,7 +92,7 @@ const ReceiveCreate = () => {
                   <option value="sales">Sales Revenue</option>
                   <option value="service">Service Fee</option>
                 </select>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsCategoryModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
           </div>
@@ -104,7 +108,7 @@ const ReceiveCreate = () => {
               <div className="input-with-append">
                 <input type="text" value={accounts.find(a => a.id === Number(formData.accountId))?.balance || "SELECT ACCOUNT"} readOnly style={{ color: 'var(--text-muted)' }} placeholder="ACCOUNT BALANCE" />
                 <button type="button" className="clear-btn" onClick={() => setFormData({...formData, accountId: ''})}><X size={16} /></button>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
           </div>
@@ -134,7 +138,7 @@ const ReceiveCreate = () => {
                   ))}
                 </select>
                 <button type="button" className="clear-btn" onClick={() => setFormData({...formData, accountId: ''})}><X size={16} /></button>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
             <div className="form-col">
@@ -156,6 +160,28 @@ const ReceiveCreate = () => {
           </div>
         </form>
       </div>
+      
+      <AddOptionModal 
+        isOpen={isClientModalOpen}
+        onClose={() => setIsClientModalOpen(false)}
+        onSave={(val) => { console.log('Add Client', val); setIsClientModalOpen(false); }}
+        title="Add Client"
+        label="Client Name"
+      />
+      <AddOptionModal 
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        onSave={(val) => { console.log('Add Category', val); setIsCategoryModalOpen(false); }}
+        title="Add Category"
+        label="Category Name"
+      />
+      <AddOptionModal 
+        isOpen={isAccountModalOpen}
+        onClose={() => setIsAccountModalOpen(false)}
+        onSave={(val) => { console.log('Add Account', val); setIsAccountModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
     </div>
   );
 };

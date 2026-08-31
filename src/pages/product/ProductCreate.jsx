@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Settings, List, Layers, Plus, Package, DollarSign, Scale, Video } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
-
+import AddOptionModal from '../../components/AddOptionModal';
 
 const ProductCreate = () => {
   const { t } = useTranslation();
@@ -18,9 +18,22 @@ const ProductCreate = () => {
     openingStock: '',
     productGroup: ''
   });
+  
+  const [isUnitModalOpen, setIsUnitModalOpen] = useState(false);
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  
+  const handleAddUnit = (name) => {
+    console.log("Add Unit:", name);
+    setIsUnitModalOpen(false);
+  };
+  
+  const handleAddGroup = (name) => {
+    console.log("Add Product Group:", name);
+    setIsGroupModalOpen(false);
   };
 
   return (
@@ -90,7 +103,7 @@ const ProductCreate = () => {
                   <select name="unit" value={formData.unit} onChange={handleChange} style={{ padding: '14px', flex: 1, border: '1px solid #e2e8f0', borderRadius: '4px 0 0 4px', outline: 'none', appearance: 'none', background: 'white' }}>
                     <option value="" disabled hidden>Select a Unit</option>
                   </select>
-                  <button type="button" className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
+                  <button type="button" onClick={() => setIsUnitModalOpen(true)} className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
                 </div>
               </div>
 
@@ -111,7 +124,7 @@ const ProductCreate = () => {
                   <select name="productGroup" value={formData.productGroup} onChange={handleChange} style={{ padding: '14px', flex: 1, border: '1px solid #e2e8f0', borderRadius: '4px 0 0 4px', outline: 'none', appearance: 'none', background: 'white' }}>
                     <option value="" disabled hidden>Select Product Group</option>
                   </select>
-                  <button type="button" className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
+                  <button type="button" onClick={() => setIsGroupModalOpen(true)} className="append-btn" style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '0 16px', borderRadius: '0 4px 4px 0' }}><Plus size={20} /></button>
                 </div>
               </div>
             </div>
@@ -122,6 +135,22 @@ const ProductCreate = () => {
           </form>
         </div>
       </div>
+      
+      <AddOptionModal 
+        isOpen={isUnitModalOpen}
+        onClose={() => setIsUnitModalOpen(false)}
+        onSave={handleAddUnit}
+        title="Add Unit"
+        label="Unit Name"
+      />
+      
+      <AddOptionModal 
+        isOpen={isGroupModalOpen}
+        onClose={() => setIsGroupModalOpen(false)}
+        onSave={handleAddGroup}
+        title="Add Product Group"
+        label="Group Name"
+      />
     </div>
   );
 };

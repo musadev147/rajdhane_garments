@@ -4,6 +4,7 @@ import { List, Play, Plus, X, Calendar, DollarSign, Type } from 'lucide-react';
 import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
+import AddOptionModal from '../../components/AddOptionModal';
 
 
 const ExpenseCreate = () => {
@@ -20,6 +21,9 @@ const ExpenseCreate = () => {
     amount: '',
     note: ''
   });
+  
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -79,7 +83,7 @@ const ExpenseCreate = () => {
                   ))}
                 </select>
                 <button type="button" className="clear-btn" onClick={() => setFormData({...formData, accountId: ''})}><X size={16} /></button>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsAccountModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
             <div className="form-col">
@@ -93,7 +97,7 @@ const ExpenseCreate = () => {
                   <option value="Marketing">Marketing</option>
                 </select>
                 <button type="button" className="clear-btn" onClick={() => setFormData({...formData, category: ''})}><X size={16} /></button>
-                <button type="button" className="append-btn"><Plus size={20} /></button>
+                <button type="button" className="append-btn" onClick={() => setIsCategoryModalOpen(true)}><Plus size={20} /></button>
               </div>
             </div>
           </div>
@@ -128,6 +132,21 @@ const ExpenseCreate = () => {
           </div>
         </form>
       </div>
+
+      <AddOptionModal 
+        isOpen={isAccountModalOpen}
+        onClose={() => setIsAccountModalOpen(false)}
+        onSave={(val) => { console.log('Add Account', val); setIsAccountModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
+      <AddOptionModal 
+        isOpen={isCategoryModalOpen}
+        onClose={() => setIsCategoryModalOpen(false)}
+        onSave={(val) => { console.log('Add Category', val); setIsCategoryModalOpen(false); }}
+        title="Add Category"
+        label="Category Name"
+      />
     </div>
   );
 };

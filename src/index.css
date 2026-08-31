@@ -231,10 +231,8 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  background: white;
+  background: transparent;
   padding: 8px;
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
 }
 
 .btn {

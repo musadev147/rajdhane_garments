@@ -4,6 +4,7 @@ import { User, Building, MapPin, Phone, Mail, Users, Settings, Play, Plus, List,
 import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import PrintHeader from '../../components/PrintHeader';
+import AddOptionModal from '../../components/AddOptionModal';
 
 
 const LoanClientCreate = () => {
@@ -24,6 +25,8 @@ const LoanClientCreate = () => {
     reference: '',
     group: ''
   });
+  
+  const [isGroupModalOpen, setIsGroupModalOpen] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -82,84 +85,87 @@ const LoanClientCreate = () => {
           <div className="form-grid">
             
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><User size={18} /></span>
-                <input type="text" name="name" className="form-input floating-label" placeholder=" " value={formData.name} onChange={handleChange} required />
+              <div className="form-input floating-label">
+                <User size={18} className="input-icon" />
+                <input type="text" name="name" placeholder=" " value={formData.name} onChange={handleChange} required />
                 <label>Client Name</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><User size={18} /></span>
-                <input type="text" name="fatherName" className="form-input floating-label" placeholder=" " value={formData.fatherName} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <User size={18} className="input-icon" />
+                <input type="text" name="fatherName" placeholder=" " value={formData.fatherName} onChange={handleChange} />
                 <label>Father's Name</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Building size={18} /></span>
-                <input type="text" name="company" className="form-input floating-label" placeholder=" " value={formData.company} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <Building size={18} className="input-icon" />
+                <input type="text" name="company" placeholder=" " value={formData.company} onChange={handleChange} />
                 <label>Company Name</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><MapPin size={18} /></span>
-                <input type="text" name="address" className="form-input floating-label" placeholder=" " value={formData.address} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <MapPin size={18} className="input-icon" />
+                <input type="text" name="address" placeholder=" " value={formData.address} onChange={handleChange} />
                 <label>Address</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Phone size={18} /></span>
-                <input type="text" name="phone" className="form-input floating-label" placeholder=" " value={formData.phone} onChange={handleChange} required />
+              <div className="form-input floating-label">
+                <Phone size={18} className="input-icon" />
+                <input type="text" name="phone" placeholder=" " value={formData.phone} onChange={handleChange} required />
                 <label>Phone Number</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Phone size={18} /></span>
-                <input type="text" name="phoneOptional" className="form-input floating-label" placeholder=" " value={formData.phoneOptional} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <Phone size={18} className="input-icon" />
+                <input type="text" name="phoneOptional" placeholder=" " value={formData.phoneOptional} onChange={handleChange} />
                 <label>Phone Optional</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Wallet size={18} /></span>
-                <input type="number" name="previousDue" className="form-input floating-label" placeholder=" " value={formData.previousDue} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <Wallet size={18} className="input-icon" />
+                <input type="number" name="previousDue" placeholder=" " value={formData.previousDue} onChange={handleChange} />
                 <label>Previous Due</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Mail size={18} /></span>
-                <input type="email" name="email" className="form-input floating-label" placeholder=" " value={formData.email} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <Mail size={18} className="input-icon" />
+                <input type="email" name="email" placeholder=" " value={formData.email} onChange={handleChange} />
                 <label>E-mail</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div className="input-with-icon">
-                <span className="input-icon"><Users size={18} /></span>
-                <input type="text" name="reference" className="form-input floating-label" placeholder=" " value={formData.reference} onChange={handleChange} />
+              <div className="form-input floating-label">
+                <Users size={18} className="input-icon" />
+                <input type="text" name="reference" placeholder=" " value={formData.reference} onChange={handleChange} />
                 <label>Reference</label>
               </div>
             </div>
 
             <div className="form-group">
-              <div style={{ display: 'flex' }}>
-                <select name="group" className="form-input floating-label" style={{ flex: 1, borderTopRightRadius: 0, borderBottomRightRadius: 0, borderRight: 'none', appearance: 'none', backgroundColor: 'transparent' }} value={formData.group} onChange={handleChange}>
-                  <option value="">Select client group</option>
-                  <option value="Group 1">Group 1</option>
-                </select>
-                <button type="button" className="btn-green" style={{ borderRadius: '0 8px 8px 0', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 0 }}>
+              <div className="input-group">
+                <div className="form-input floating-label no-icon">
+                  <select name="group" value={formData.group} onChange={handleChange}>
+                    <option value="" disabled hidden></option>
+                    <option value="Group 1">Group 1</option>
+                  </select>
+                  <label>Select client group</label>
+                </div>
+                <button type="button" className="btn-append" onClick={() => setIsGroupModalOpen(true)}>
                   <Plus size={20} />
                 </button>
               </div>
@@ -172,6 +178,14 @@ const LoanClientCreate = () => {
           </button>
         </form>
       </div>
+      
+      <AddOptionModal 
+        isOpen={isGroupModalOpen}
+        onClose={() => setIsGroupModalOpen(false)}
+        onSave={(val) => { console.log('Add Group', val); setIsGroupModalOpen(false); }}
+        title="Add Client Group"
+        label="Group Name"
+      />
     </div>
   );
 };

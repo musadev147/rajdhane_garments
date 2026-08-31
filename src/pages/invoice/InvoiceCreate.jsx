@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { Plus, X, Calendar, Clock, Barcode, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import AddOptionModal from '../../components/AddOptionModal';
 
 const InvoiceCreate = () => {
   const { t } = useTranslation();
@@ -20,6 +21,11 @@ const InvoiceCreate = () => {
     receiveAmount: '0',
     sms: false
   });
+  
+  const [isClientModalOpen, setIsClientModalOpen] = useState(false);
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [isTotalBalanceAccModalOpen, setIsTotalBalanceAccModalOpen] = useState(false);
+  const [isCashSellAccModalOpen, setIsCashSellAccModalOpen] = useState(false);
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
@@ -46,7 +52,7 @@ const InvoiceCreate = () => {
                     <option value="C.CASTOMER">C.CASTOMER</option>
                   </select>
                   <button type="button" className="clear-btn"><X size={16} /></button>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsClientModalOpen(true)}><Plus size={20} /></button>
                 </div>
                 <div style={{ fontSize: '12px', fontWeight: 'bold', marginTop: '4px' }}>Due: 0</div>
               </div>
@@ -81,7 +87,7 @@ const InvoiceCreate = () => {
                   <select name="productId" value={formData.productId} onChange={handleChange}>
                     <option value="" disabled hidden>Select Product</option>
                   </select>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsProductModalOpen(true)}><Plus size={20} /></button>
                 </div>
               </div>
             </div>
@@ -120,7 +126,7 @@ const InvoiceCreate = () => {
                     <option value="TOTAL BALENCE">TOTAL BALENCE</option>
                   </select>
                   <button type="button" className="clear-btn"><X size={16} /></button>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsTotalBalanceAccModalOpen(true)}><Plus size={20} /></button>
                 </div>
                 
                 <div className="input-with-append">
@@ -128,7 +134,7 @@ const InvoiceCreate = () => {
                     <option value="CASH SELL">CASH SELL</option>
                   </select>
                   <button type="button" className="clear-btn"><X size={16} /></button>
-                  <button type="button" className="append-btn"><Plus size={20} /></button>
+                  <button type="button" className="append-btn" onClick={() => setIsCashSellAccModalOpen(true)}><Plus size={20} /></button>
                 </div>
 
                 <div style={{ position: 'relative' }}>
@@ -193,6 +199,35 @@ const InvoiceCreate = () => {
           </form>
         </div>
       </div>
+      
+      <AddOptionModal 
+        isOpen={isClientModalOpen}
+        onClose={() => setIsClientModalOpen(false)}
+        onSave={(val) => { console.log('Add Client', val); setIsClientModalOpen(false); }}
+        title="Add Client"
+        label="Client Name"
+      />
+      <AddOptionModal 
+        isOpen={isProductModalOpen}
+        onClose={() => setIsProductModalOpen(false)}
+        onSave={(val) => { console.log('Add Product', val); setIsProductModalOpen(false); }}
+        title="Add Product"
+        label="Product Name"
+      />
+      <AddOptionModal 
+        isOpen={isTotalBalanceAccModalOpen}
+        onClose={() => setIsTotalBalanceAccModalOpen(false)}
+        onSave={(val) => { console.log('Add Total Balance Account', val); setIsTotalBalanceAccModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
+      <AddOptionModal 
+        isOpen={isCashSellAccModalOpen}
+        onClose={() => setIsCashSellAccModalOpen(false)}
+        onSave={(val) => { console.log('Add Cash Sell Account', val); setIsCashSellAccModalOpen(false); }}
+        title="Add Account"
+        label="Account Name"
+      />
     </div>
   );
 };

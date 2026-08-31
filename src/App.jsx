@@ -15,6 +15,7 @@ import SalesReportRoutes from './routes/SalesReportRoutes';
 import DepositReportRoutes from './routes/DepositReportRoutes';
 import ExpenseReportRoutes from './routes/ExpenseReportRoutes';
 import SettingsRoutes from "./routes/SettingsRoutes";
+import SupportDashboard from "./pages/support/SupportDashboard";
 import { LoaderProvider, useLoader } from './context/LoaderContext';
 import { useLocation } from 'react-router-dom';
 
@@ -97,6 +98,9 @@ function App() {
 
               {/* Settings Routes */}
               <Route path="/settings/*" element={<SettingsRoutes />} />
+              
+              {/* Support Route */}
+              <Route path="/support" element={<SupportDashboard />} />
             </Routes>
           </div>
           <footer style={{ textAlign: 'center', padding: '20px', color: '#6b7280', fontSize: '13px', flexShrink: 0 }}>
