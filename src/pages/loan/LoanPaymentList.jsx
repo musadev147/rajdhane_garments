@@ -3,23 +3,30 @@ import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { Plus, Printer, RotateCcw, Edit, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { loanService } from '../../services/loanService';
 
 const LoanPaymentList = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  const [loans, setLoans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data matching the screenshot
-  const [loans, setLoans] = useState([
-    { id: 1, date: '23 Aug 2026', receiptNo: '182399', clientName: 'MONTU VI / VABI', clientNumber: '01', type: 'Loan Payment', description: 'MONTU VABE ID CARD SONGSHADON BABOD', amount: 80000.00 },
-    { id: 2, date: '20 Aug 2026', receiptNo: '181848', clientName: 'SELIM NIJ INVAST', clientNumber: '01', type: 'Loan Payment', description: 'ARIF UROP TAKA PATHNO GARI MOBIL + MAS', amount: 50000.00 },
-    { id: 3, date: '20 Aug 2026', receiptNo: '181803', clientName: 'UNITED FINANAS', clientNumber: '01', type: 'Loan Payment', description: 'UNITED KISTE', amount: 214140.00 },
-    { id: 4, date: '18 Aug 2026', receiptNo: '181576', clientName: 'BRAC DPS', clientNumber: '01', type: 'Loan Payment', description: 'BRAC DPS', amount: 10000.00 },
-    { id: 5, date: '16 Aug 2026', receiptNo: '181061', clientName: 'ROFIQ NIJ IINVAST', clientNumber: '01', type: 'Loan Payment', description: 'ROFIQ HAULAD', amount: 70000.00 },
-    { id: 6, date: '09 Aug 2026', receiptNo: '179944', clientName: 'RAJDHANI CC', clientNumber: '01', type: 'Loan Payment', description: 'RAJDHANI CC UTTRA ADJEST ESTAN ADJEST', amount: 8000000.00 },
-    { id: 7, date: '09 Aug 2026', receiptNo: '179930', clientName: 'SELIM NIJ INVAST', clientNumber: '01', type: 'Loan Payment', description: 'ARIF YOUROF TIKET KATA', amount: 85700.00 },
-    { id: 8, date: '08 Aug 2026', receiptNo: '179755', clientName: 'CASH SOT', clientNumber: '01', type: 'Loan Payment', description: 'CASH SOT SOMOTA ROFIQ', amount: 5023.00 }
-  ]);
+  React.useEffect(() => {
+    fetchLoans();
+  }, []);
+
+  const fetchLoans = async () => {
+    try {
+      setLoading(true);
+      const res = await loanService.getLoanPayments();
+      setLoans(res || []);
+    } catch (error) {
+      console.error("Error fetching loan payments:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px', background: 'white' }}>
@@ -114,12 +121,12 @@ const LoanPaymentList = () => {
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.date}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.receiptNo}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0', fontSize: '13px' }}>
-                    <div>Name: {loan.clientName}</div>
-                    <div>Number: {loan.clientNumber}</div>
+                    <div>Name: {loan.clientName || loan.loan_account?.name || '-'}</div>
+                    <div>Number: {loan.clientNumber || loan.loan_account?.phone || '-'}</div>
                   </td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.type}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.type || 'Loan Payment'}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.description}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.amount.toFixed(2)}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{Number(loan.amount).toFixed(2)}</td>
                   <td style={{ textAlign: 'center', padding: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '4px' }}>
                       <button className="action-btn-sm edit" style={{ background: 'var(--info)', border: 'none', borderRadius: '4px', padding: '4px', color: 'white', cursor: 'pointer' }}>
@@ -132,7 +139,12 @@ const LoanPaymentList = () => {
                   </td>
                 </tr>
               ))}
-              {loans.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>Loading...</td>
+                </tr>
+              )}
+              {!loading && loans.length === 0 && (
                 <tr>
                   <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>No loans found.</td>
                 </tr>

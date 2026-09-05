@@ -16,6 +16,8 @@ import DepositReportRoutes from './routes/DepositReportRoutes';
 import ExpenseReportRoutes from './routes/ExpenseReportRoutes';
 import SettingsRoutes from "./routes/SettingsRoutes";
 import SupportDashboard from "./pages/support/SupportDashboard";
+import Profile from './pages/profile/Profile';
+import Login from './pages/auth/Login';
 import { LoaderProvider, useLoader } from './context/LoaderContext';
 import { useLocation } from 'react-router-dom';
 
@@ -35,8 +37,10 @@ const RouteChangeListener = () => {
   return null;
 };
 
-function App() {
+const AppContent = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -44,70 +48,87 @@ function App() {
     setIsSidebarOpen(false);
   };
 
+  if (location.pathname === '/login') {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    );
+  }
+
+  return (
+    <div className="app-layout">
+      <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+      
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={closeSidebar}></div>
+      )}
+
+      <main className="main-wrapper">
+        <Header toggleSidebar={toggleSidebar} />
+        <div style={{ flex: '1 0 auto', paddingBottom: '20px' }}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            
+            {/* All CRM related routes are handled inside CrmRoutes */}
+            <Route path="/crm/*" element={<CrmRoutes />} />
+            
+            {/* Account Routes */}
+            <Route path="/account/*" element={<AccountRoutes />} />
+            
+            {/* Loan Routes */}
+            <Route path="/loan/*" element={<LoanRoutes />} />
+            
+            {/* Invoice Routes */}
+            <Route path="/invoice/*" element={<InvoiceRoutes />} />
+            
+            {/* Product Routes */}
+            <Route path="/product/*" element={<ProductRoutes />} />
+            
+            {/* SMS Routes */}
+            <Route path="/sms/*" element={<SmsRoutes />} />
+            
+            {/* Staff Routes */}
+            <Route path="/staff/*" element={<StaffRoutes />} />
+            
+            {/* Due Report Routes */}
+            <Route path="/due-report/*" element={<DueReportRoutes />} />
+            
+            {/* Sales Report Routes */}
+            <Route path="/sales-report/*" element={<SalesReportRoutes />} />
+
+            {/* Deposit Report Routes */}
+            <Route path="/deposit-report/*" element={<DepositReportRoutes />} />
+
+            {/* Expense Report Routes */}
+            <Route path="/expense-report/*" element={<ExpenseReportRoutes />} />
+
+            {/* Settings Routes */}
+            <Route path="/settings/*" element={<SettingsRoutes />} />
+            
+            {/* Support Route */}
+            <Route path="/support" element={<SupportDashboard />} />
+            
+            {/* Profile Route */}
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </div>
+        <footer style={{ textAlign: 'center', padding: '20px', color: '#6b7280', fontSize: '13px', flexShrink: 0 }}>
+          Copyright © 2026 Softzen IT. All rights reserved.
+        </footer>
+      </main>
+    </div>
+  );
+};
+
+function App() {
   return (
     <LoaderProvider>
       <BrowserRouter>
         <RouteChangeListener />
-        <div className="app-layout">
-        <Sidebar isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-        
-        {/* Mobile Sidebar Overlay */}
-        {isSidebarOpen && (
-          <div className="sidebar-overlay" onClick={closeSidebar}></div>
-        )}
-
-        <main className="main-wrapper">
-          <Header toggleSidebar={toggleSidebar} />
-          <div style={{ flex: '1 0 auto', paddingBottom: '20px' }}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/dashboard" replace />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              
-              {/* All CRM related routes are handled inside CrmRoutes */}
-              <Route path="/crm/*" element={<CrmRoutes />} />
-              
-              {/* Account Routes */}
-              <Route path="/account/*" element={<AccountRoutes />} />
-              
-              {/* Loan Routes */}
-              <Route path="/loan/*" element={<LoanRoutes />} />
-              
-              {/* Invoice Routes */}
-              <Route path="/invoice/*" element={<InvoiceRoutes />} />
-              
-              {/* Product Routes */}
-              <Route path="/product/*" element={<ProductRoutes />} />
-              
-              {/* SMS Routes */}
-              <Route path="/sms/*" element={<SmsRoutes />} />
-              
-              {/* Staff Routes */}
-              <Route path="/staff/*" element={<StaffRoutes />} />
-              
-              {/* Due Report Routes */}
-              <Route path="/due-report/*" element={<DueReportRoutes />} />
-              
-              {/* Sales Report Routes */}
-              <Route path="/sales-report/*" element={<SalesReportRoutes />} />
-
-              {/* Deposit Report Routes */}
-              <Route path="/deposit-report/*" element={<DepositReportRoutes />} />
-
-              {/* Expense Report Routes */}
-              <Route path="/expense-report/*" element={<ExpenseReportRoutes />} />
-
-              {/* Settings Routes */}
-              <Route path="/settings/*" element={<SettingsRoutes />} />
-              
-              {/* Support Route */}
-              <Route path="/support" element={<SupportDashboard />} />
-            </Routes>
-          </div>
-          <footer style={{ textAlign: 'center', padding: '20px', color: '#6b7280', fontSize: '13px', flexShrink: 0 }}>
-            Copyright © 2026 Softzen IT. All rights reserved.
-          </footer>
-        </main>
-      </div>
+        <AppContent />
       </BrowserRouter>
     </LoaderProvider>
   );

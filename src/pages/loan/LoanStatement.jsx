@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { Printer, RotateCcw } from 'lucide-react';
+import { loanService } from '../../services/loanService';
 
 const LoanStatement = () => {
   const { t } = useTranslation();
 
-  // Mock data matching the screenshot
-  const [statements, setStatements] = useState([
-    { id: 1, date: '23 May 2024', receiptNo: '4333', clientName: 'JHENIDA TDMC BANK DPS LOON RAJDHANI + JENTS', clientNumber: '01', description: 'JHENDA FDR LOON PAID', type: 'Loan Payment', loanReceive: 0, loanPayment: 400000.00, balance: 400000 },
-    { id: 2, date: '26 May 2024', receiptNo: '4720', clientName: 'BRAC AGANT BANK', clientNumber: '01', description: 'BRAC LOON 3 KISTI', type: 'Loan Payment', loanReceive: 0, loanPayment: 436500.00, balance: -836500 },
-    { id: 3, date: '30 May 2024', receiptNo: '5119', clientName: 'UNITED FINANAS', clientNumber: '01', description: 'UNITED KISSTI', type: 'Loan Payment', loanReceive: 0, loanPayment: 83500.00, balance: -920000 },
-    { id: 4, date: '25 Jun 2024', receiptNo: '12333', clientName: 'BRAC AGANT BANK', clientNumber: '01', description: 'BRAC KISSTI', type: 'Loan Payment', loanReceive: 0, loanPayment: 436500.00, balance: -1356500 },
-    { id: 5, date: '27 Jun 2024', receiptNo: '12503', clientName: 'SHAMULI APU // NIPA', clientNumber: '01916002218', description: 'SHAMOLI APU TAKA FAROT', type: 'Loan Payment', loanReceive: 0, loanPayment: 30000.00, balance: -1386500 },
-    { id: 6, date: '29 Jun 2024', receiptNo: '12846', clientName: 'SHAMULI APU // NIPA', clientNumber: '01916002218', description: 'SHAMOLI APU TAKA FAROT', type: 'Loan Payment', loanReceive: 0, loanPayment: 90000.00, balance: -1476500 }
-  ]);
+  const [statements, setStatements] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    fetchStatements();
+  }, []);
+
+  const fetchStatements = async () => {
+    try {
+      setLoading(true);
+      const res = await loanService.getLoanStatement();
+      setStatements(res || []);
+    } catch (err) {
+      console.error("Error fetching loan statement:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px', background: 'white' }}>
@@ -117,19 +127,28 @@ const LoanStatement = () => {
                 <tr key={statement.id} style={{ background: 'white', borderBottom: '1px solid #e2e8f0' }}>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{index + 1}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.date}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.receiptNo}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.receiptNo || statement.id?.slice(-6)}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0', fontSize: '13px' }}>
-                    <div>Name: {statement.clientName} | </div>
-                    <div>Number: {statement.clientNumber}</div>
+                    {statement.source || (
+                      <>
+                        <div>Name: {statement.clientName} | </div>
+                        <div>Number: {statement.clientNumber}</div>
+                      </>
+                    )}
                   </td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0', fontSize: '13px' }}>{statement.description}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.type}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.loanReceive}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.loanPayment.toFixed(2)}</td>
-                  <td style={{ textAlign: 'center', padding: '12px' }}>{statement.balance}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.transaction_type || statement.type}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.credit || statement.loanReceive || '--'}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{statement.debit || statement.loanPayment || '--'}</td>
+                  <td style={{ textAlign: 'center', padding: '12px' }}>{statement.balance || '--'}</td>
                 </tr>
               ))}
-              {statements.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan="9" style={{ textAlign: 'center', padding: '20px' }}>Loading...</td>
+                </tr>
+              )}
+              {!loading && statements.length === 0 && (
                 <tr>
                   <td colSpan="9" style={{ textAlign: 'center', padding: '20px' }}>No statements found.</td>
                 </tr>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { User, Building, MapPin, Phone, Mail, Users, Settings, Play, Plus, List, Layers, Wallet } from 'lucide-react';
-import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { loanService } from '../../services/loanService';
 import PrintHeader from '../../components/PrintHeader';
 import AddOptionModal from '../../components/AddOptionModal';
 
@@ -10,8 +10,8 @@ import AddOptionModal from '../../components/AddOptionModal';
 const LoanClientCreate = () => {
   const { t } = useTranslation();
 
-  const { addLoanClient } = useAppContext();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,29 +32,28 @@ const LoanClientCreate = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.phone) {
       alert("Name and Phone are required.");
       return;
     }
 
-    addLoanClient({
-      name: formData.name,
-      fatherName: formData.fatherName,
-      company: formData.company,
-      address: formData.address,
-      phone: formData.phone,
-      phoneOptional: formData.phoneOptional,
-      previousDue: Number(formData.previousDue) || 0,
-      email: formData.email,
-      reference: formData.reference,
-      group: formData.group,
-      due: Number(formData.previousDue) || 0
-    });
-
-    alert("Loan Client added successfully!");
-    navigate('/loan/loan-client-list');
+    try {
+      setLoading(true);
+      await loanService.createLoanAccount({
+        name: formData.name,
+        phone: formData.phone,
+        address: formData.address
+      });
+      alert("Loan Client added successfully!");
+      navigate('/loan/loan-client-list');
+    } catch (error) {
+      console.error("Error creating loan client:", error);
+      alert("Failed to create loan client");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -173,8 +172,8 @@ const LoanClientCreate = () => {
 
           </div>
 
-          <button type="submit" className="btn-green" style={{ width: '100%', padding: '14px', fontSize: '16px', marginTop: '16px' }}>
-            Client Add
+          <button type="submit" className="btn-green" style={{ width: '100%', padding: '14px', fontSize: '16px', marginTop: '16px' }} disabled={loading}>
+            {loading ? 'Adding...' : 'Client Add'}
           </button>
         </form>
       </div>

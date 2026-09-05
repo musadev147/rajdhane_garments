@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { List, Play, Plus, Calendar, DollarSign, FileText, MessageSquare } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import PrintHeader from '../../components/PrintHeader';
-import AddOptionModal from '../../components/AddOptionModal';
+import { loanService } from '../../services/loanService';
 
 
 const LoanReceiveCreate = () => {
@@ -24,16 +23,46 @@ const LoanReceiveCreate = () => {
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
+  
+  const [loanAccounts, setLoanAccounts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  React.useEffect(() => {
+    fetchLoanAccounts();
+  }, []);
+
+  const fetchLoanAccounts = async () => {
+    try {
+      const res = await loanService.getLoanAccounts();
+      setLoanAccounts(res || []);
+    } catch (err) {
+      console.error("Error fetching loan accounts:", err);
+    }
+  };
 
   const handleChange = (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setFormData({ ...formData, [e.target.name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Loan Receive added successfully!");
-    navigate('/loan/receive');
+    try {
+      setLoading(true);
+      await loanService.createLoanReceive({
+        loan_account: formData.clientId,
+        account: formData.accountId,
+        amount: formData.amount,
+        description: formData.note
+      });
+      alert("Loan Receive added successfully!");
+      navigate('/loan/receive');
+    } catch (error) {
+      console.error("Error creating loan receive:", error);
+      alert("Failed to create loan receive.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -62,8 +91,9 @@ const LoanReceiveCreate = () => {
                 <div className="input-with-append">
                   <select name="clientId" value={formData.clientId} onChange={handleChange} required>
                     <option value="" disabled hidden>{t('common.select_client')}</option>
-                    <option value="1">CASH BASHI</option>
-                    <option value="2">LAL MIYA //LATA GARAJ</option>
+                    {loanAccounts.map(acc => (
+                      <option key={acc.id} value={acc.id}>{acc.name} - {acc.phone}</option>
+                    ))}
                   </select>
                   <button type="button" className="append-btn" onClick={() => setIsClientModalOpen(true)}><Plus size={20} /></button>
                 </div>
@@ -128,8 +158,8 @@ const LoanReceiveCreate = () => {
 
             {/* Footer Buttons */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '32px' }}>
-              <button type="submit" className="btn-primary" style={{ background: 'var(--primary)', padding: '10px 24px', fontSize: '14px', borderRadius: '4px' }}>
-                Add New Receive
+              <button type="submit" className="btn-primary" style={{ background: 'var(--primary)', padding: '10px 24px', fontSize: '14px', borderRadius: '4px' }} disabled={loading}>
+                {loading ? 'Processing...' : 'Add New Receive'}
               </button>
               <button type="button" className="btn-danger" onClick={() => navigate('/loan/receive')} style={{ background: 'var(--danger)', padding: '10px 24px', fontSize: '14px', borderRadius: '4px' }}>
                 Close

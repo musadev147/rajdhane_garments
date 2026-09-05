@@ -2,27 +2,31 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { Plus, Printer, RotateCcw, Edit, Trash2 } from 'lucide-react';
-import { useAppContext } from '../../context/AppContext';
 import { useNavigate } from 'react-router-dom';
+import { loanService } from '../../services/loanService';
 
 const LoanReceiveList = () => {
   const { t } = useTranslation();
 
-  const { state } = useAppContext();
   const navigate = useNavigate();
+  const [loans, setLoans] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data matching the screenshot
-  const [loans, setLoans] = useState([
-    { id: 1, date: '23 Aug 2026', receiptNo: '182403', clientName: 'CASH BASHI', clientNumber: '01', type: 'Loan Receive', description: 'CASH BASHI', amount: 1296.00 },
-    { id: 2, date: '21 Aug 2026', receiptNo: '182091', clientName: 'LAL MIYA //LATA GARAJ', clientNumber: '01', type: 'Loan Receive', description: 'LAL MEYA DOKAN ADVANCE JOMA', amount: 50000.00 },
-    { id: 3, date: '21 Aug 2026', receiptNo: '182089', clientName: 'BIPUL LATA INGIN MISTREE', clientNumber: '0', type: 'Loan Receive', description: 'BIPUL LATA MISTIRY DOKAN ADVANCE', amount: 50000.00 },
-    { id: 4, date: '20 Aug 2026', receiptNo: '182147', clientName: 'CASH BASHI', clientNumber: '01', type: 'Loan Receive', description: 'CASH BASHI', amount: 22900.00 },
-    { id: 5, date: '18 Aug 2026', receiptNo: '182330', clientName: 'CASH BASHI', clientNumber: '01', type: 'Loan Receive', description: 'FIVE STAR BABOD BASHE JOMA', amount: 10100.00 },
-    { id: 6, date: '09 Aug 2026', receiptNo: '179943', clientName: 'EASTERN BANK PLC', clientNumber: '01', type: 'Loan Receive', description: 'ESTAN BANK LOON NEWA', amount: 8000000.00 },
-    { id: 7, date: '07 Aug 2026', receiptNo: '179548', clientName: 'BIPUL LATA INGIN MISTREE', clientNumber: '0', type: 'Loan Receive', description: 'BIPUL LATA INGIN MISTREE GOR ADVANCE BABOD', amount: 100000.00 },
-    { id: 8, date: '04 Aug 2026', receiptNo: '178983', clientName: 'LAL MIYA //LATA GARAJ', clientNumber: '01', type: 'Loan Receive', description: 'LAL MIYA GARAJ ADVAVCE JOMA BIPUL VI', amount: 50000.00 },
-    { id: 9, date: '21 Jul 2026', receiptNo: '176490', clientName: 'SELIM NIJ INVAST', clientNumber: '01', type: 'Loan Receive', description: 'ARIF IFIC BANK THAKA TAKA FEROT', amount: 90000.00 }
-  ]);
+  React.useEffect(() => {
+    fetchLoans();
+  }, []);
+
+  const fetchLoans = async () => {
+    try {
+      setLoading(true);
+      const res = await loanService.getLoanReceives();
+      setLoans(res || []);
+    } catch (error) {
+      console.error("Error fetching loan receives:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="dashboard-content" style={{ paddingBottom: '100px', background: 'white' }}>
@@ -117,12 +121,12 @@ const LoanReceiveList = () => {
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.date}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.receiptNo}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0', fontSize: '13px' }}>
-                    <div>Name: {loan.clientName}</div>
-                    <div>Number: {loan.clientNumber}</div>
+                    <div>Name: {loan.clientName || loan.loan_account?.name || '-'}</div>
+                    <div>Number: {loan.clientNumber || loan.loan_account?.phone || '-'}</div>
                   </td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.type}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.type || 'Loan Receive'}</td>
                   <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.description}</td>
-                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{loan.amount.toFixed(2)}</td>
+                  <td style={{ textAlign: 'center', padding: '12px', borderRight: '1px solid #e2e8f0' }}>{Number(loan.amount).toFixed(2)}</td>
                   <td style={{ textAlign: 'center', padding: '12px' }}>
                     <div style={{ display: 'flex', justifyContent: 'center', gap: '4px' }}>
                       <button className="action-btn-sm edit" style={{ background: 'var(--info)', border: 'none', borderRadius: '4px', padding: '4px', color: 'white', cursor: 'pointer' }}>
@@ -135,7 +139,12 @@ const LoanReceiveList = () => {
                   </td>
                 </tr>
               ))}
-              {loans.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>Loading...</td>
+                </tr>
+              )}
+              {!loading && loans.length === 0 && (
                 <tr>
                   <td colSpan="8" style={{ textAlign: 'center', padding: '20px' }}>No loans found.</td>
                 </tr>

@@ -110,7 +110,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
       <div style={{ padding: '16px', display: 'flex', justifyContent: 'center', borderBottom: '1px solid #f1f5f9' }}>
         <button style={{ background: 'var(--success)', color: 'white', border: 'none', padding: '6px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', cursor: 'pointer' }}>
-          Show Balance
+          {t('sidebar.show_balance')}
         </button>
       </div>
 
@@ -140,8 +140,20 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
               <div>
                 <div 
                   className="nav-item" 
-                  style={{ paddingLeft: '32px', marginBottom: '0', background: clientOpen ? 'rgba(79, 70, 229, 0.05)' : 'transparent' }}
-                  onClick={() => setClientOpen(!clientOpen)}
+                  style={{ 
+                    paddingLeft: '32px', 
+                    marginBottom: '4px', 
+                    background: clientOpen ? '#f8fafc' : 'transparent',
+                    color: clientOpen ? '#3b82f6' : 'inherit',
+                    borderRadius: '8px',
+                    cursor: 'pointer'
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setClientOpen(!clientOpen);
+                    if (!clientOpen) setSupplierOpen(false);
+                  }}
                 >
                   <div className="nav-item-content" style={{ fontSize: '14px' }}>
                     <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.client')}
@@ -150,20 +162,20 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 </div>
                 
                 {clientOpen && (
-                  <div>
-                    <NavLink to="/crm/client-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
+                  <div style={{ paddingBottom: '8px' }}>
+                    <NavLink to="/crm/client-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new_client')}
                     </NavLink>
-                    <NavLink to="/crm/client-list" className="submenu-item">
+                    <NavLink to="/crm/client-list" className="submenu-item" style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.client_list')}
                     </NavLink>
-                    <NavLink to="/crm/client-group" className="submenu-item">
+                    <NavLink to="/crm/client-group" className="submenu-item" style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.client_group')}
                     </NavLink>
-                    <NavLink to="/crm/client-statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/client-statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.client_statement')}
                     </NavLink>
-                    <NavLink to="/crm/due-collection-date" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/due-collection-date" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.due_collection_date')}
                     </NavLink>
                   </div>
@@ -172,7 +184,23 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
 
               {/* Supplier Submenu Group */}
               <div>
-                <div className="nav-item" onClick={() => setSupplierOpen(!supplierOpen)} style={{ paddingLeft: '32px', marginBottom: '0', cursor: 'pointer' }}>
+                <div 
+                  className="nav-item" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setSupplierOpen(!supplierOpen);
+                    if (!supplierOpen) setClientOpen(false);
+                  }} 
+                  style={{ 
+                    paddingLeft: '32px', 
+                    marginBottom: '4px', 
+                    background: supplierOpen ? '#f8fafc' : 'transparent',
+                    color: supplierOpen ? '#3b82f6' : 'inherit',
+                    borderRadius: '8px',
+                    cursor: 'pointer' 
+                  }}
+                >
                   <div className="nav-item-content" style={{ fontSize: '14px' }}>
                     <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier')}
                   </div>
@@ -180,17 +208,20 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 </div>
                 {supplierOpen && (
                   <div className="submenu" style={{ marginLeft: '16px', background: 'transparent' }}>
-                    <NavLink to="/crm/supplier-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/supplier-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new_supplier')}
                     </NavLink>
-                    <NavLink to="/crm/supplier-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/supplier-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_list')}
                     </NavLink>
-                    <NavLink to="/crm/supplier-group" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/supplier-group" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_group')}
                     </NavLink>
-                    <NavLink to="/crm/supplier-statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
+                    <NavLink to="/crm/supplier-statement" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_statement')}
+                    </NavLink>
+                    <NavLink to="/crm/supplier-cheque-schedule" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_cheque_schedule')}
                     </NavLink>
                   </div>
                 )}
@@ -252,10 +283,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {expenseOpen && (
                   <div>
                     <NavLink to="/account/expense-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Add New
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new')}
                     </NavLink>
                     <NavLink to="/account/expense-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Expense
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.expense')}
                     </NavLink>
                     <NavLink to="/account/supplier-payment" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_payment')}
@@ -340,10 +371,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
           {loanOpen && (
             <div className="submenu">
               <NavLink to="/loan/client-create" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
-                <span style={{ marginRight: '8px' }}>»</span> Add New Client
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new_client')}
               </NavLink>
               <NavLink to="/loan/client-list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Client List
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.client_list')}
               </NavLink>
               <NavLink to="/loan/receive" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.loan_receive')}
@@ -370,7 +401,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
           {invoiceOpen && (
             <div className="submenu">
               <NavLink to="/invoice/add-new" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)' }}>
-                <span style={{ marginRight: '8px' }}>»</span> Add New
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new')}
               </NavLink>
               <NavLink to="/invoice/list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.invoice_list')}
@@ -487,7 +518,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {purchaseOpen && (
                   <div>
                     <NavLink to="/product/purchase/add-new" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Add New
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new')}
                     </NavLink>
                     <NavLink to="/product/purchase/list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.purchase_list')}
@@ -518,7 +549,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {purchaseReturnOpen && (
                   <div>
                     <NavLink to="/product/purchase-return/add-new" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ color: 'var(--primary)', paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Add New
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.add_new')}
                     </NavLink>
                     <NavLink to="/product/purchase-return/list" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.purchase_return_list')}
@@ -556,10 +587,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.customer_group')}
               </NavLink>
               <NavLink to="/sms/supplier" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Supplier
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier')}
               </NavLink>
               <NavLink to="/sms/supplier-group" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Supplier Group
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_group')}
               </NavLink>
               <NavLink to="/sms/schedule" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.sms_schedule')}
@@ -726,7 +757,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.customer_wise')}
               </NavLink>
               <NavLink to="/sales-report/group-wise" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Group Wise
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.group_wise')}
               </NavLink>
               <NavLink to="/sales-report/product-wise" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.product_wise')}
@@ -757,7 +788,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.category_wise')}
               </NavLink>
               <NavLink to="/deposit-report/customer-wise" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Customer Wise
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.customer_wise')}
               </NavLink>
             </div>
           )}
@@ -779,7 +810,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.all_expense')}
               </NavLink>
               <NavLink to="/expense-report/category-wise" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.category')} Wise
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.category_wise')}
               </NavLink>
               <NavLink to="/expense-report/supplier-purchase" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.supplier_purchase_payment')}
@@ -817,7 +848,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {incomeCategoryOpen && (
                   <div>
                     <NavLink to="/settings/income-category" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Category
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.category')}
                     </NavLink>
                     <NavLink to="/settings/income-subcategory" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
                       <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.subcategory')}
@@ -842,10 +873,10 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 {expenseCategorySettingOpen && (
                   <div>
                     <NavLink to="/settings/expense-category" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Category
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.category')}
                     </NavLink>
                     <NavLink to="/settings/expense-subcategory" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`} style={{ paddingLeft: '48px' }}>
-                      <span style={{ marginRight: '8px' }}>»</span> Subcategory
+                      <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.subcategory')}
                     </NavLink>
                   </div>
                 )}
@@ -862,29 +893,21 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
                 <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.company_information')}
               </NavLink>
               <NavLink to="/settings/bank" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Bank
+                <span style={{ marginRight: '8px' }}>»</span> {t('sidebar.bank_list')}
               </NavLink>
               <NavLink to="/settings/settings" className={({isActive}) => `submenu-item ${isActive ? 'active' : ''}`}>
-                <span style={{ marginRight: '8px' }}>»</span> Settings
+                <span style={{ marginRight: '8px' }}>»</span> {t('menu.settings')}
               </NavLink>
 
             </div>
           )}
         </div>
 
-        {/* Softhost It Support */}
-        <NavLink to="/support" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`} onClick={closeSidebar}>
-          <div className="nav-item-content">
-            <HelpCircle size={20} />
-            <span>Softhost It Support</span>
-          </div>
-        </NavLink>
-
         {/* Sign Out */}
         <div className="nav-item" style={{ cursor: 'pointer' }}>
           <div className="nav-item-content">
             <LogOut size={20} />
-            <span>Sign Out</span>
+            <span>{t('menu.sign_out')}</span>
           </div>
         </div>
 

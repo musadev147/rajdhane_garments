@@ -3,15 +3,31 @@ import { useTranslation } from 'react-i18next';
 import PrintHeader from '../../components/PrintHeader';
 import { RotateCcw, Printer, Play, Plus, ArrowLeft, Layers, ChevronDown, Eye, Edit, Trash2, DollarSign, FileText } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppContext } from '../../context/AppContext';
+import { loanService } from '../../services/loanService';
 
 const LoanClientList = () => {
   const { t } = useTranslation();
 
-  const { state } = useAppContext();
-  const { loanClients } = state;
   const navigate = useNavigate();
+  const [loanClients, setLoanClients] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [activeAction, setActiveAction] = useState(null);
+
+  React.useEffect(() => {
+    fetchLoanClients();
+  }, []);
+
+  const fetchLoanClients = async () => {
+    try {
+      setLoading(true);
+      const res = await loanService.getLoanAccounts();
+      setLoanClients(res || []);
+    } catch (error) {
+      console.error("Error fetching loan clients:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const toggleAction = (id) => {
     if (activeAction === id) {
@@ -131,10 +147,8 @@ const LoanClientList = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: '80px 10px 1fr', gap: '4px', fontSize: '13px', color: '#000', fontWeight: '600' }}>
                       <div>Name</div><div>:</div><div>{client.name}</div>
                       <div>Phone</div><div>:</div><div>{client.phone}</div>
-                      {client.group && <><div>Client Group</div><div>:</div><div>{client.group}</div></>}
                       {client.address && <><div>Address</div><div>:</div><div>{client.address}</div></>}
-                      <div>Status</div><div>:</div><div>Activated</div>
-                      {client.createdAt && <><div>Created At</div><div>:</div><div>{client.createdAt}</div></>}
+                      <div>Status</div><div>:</div><div>{client.status === 1 ? 'Activated' : 'Deactivated'}</div>
                     </div>
                   </td>
 
@@ -144,19 +158,11 @@ const LoanClientList = () => {
                       <tbody>
                         <tr>
                           <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Previous Due</td>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>{client.previousDue || '0.00'} ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>{client.previous_due || '0.00'} ৳</td>
                         </tr>
                         <tr>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Loan Payment</td>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>0 ৳</td>
-                        </tr>
-                        <tr>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px' }}>Loan Receive</td>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0' }}>0 ৳</td>
-                        </tr>
-                        <tr>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', fontWeight: 'bold' }}>Balance</td>
-                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0', fontWeight: 'bold' }}>{client.due} ৳</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', fontWeight: 'bold' }}>Max Limit</td>
+                          <td style={{ borderBottom: '1px solid #e2e8f0', padding: '6px 12px', borderLeft: '1px solid #e2e8f0', fontWeight: 'bold' }}>{client.max_due_limit || '0.00'} ৳</td>
                         </tr>
                       </tbody>
                     </table>
@@ -196,7 +202,12 @@ const LoanClientList = () => {
                   
                 </tr>
               ))}
-              {loanClients.length === 0 && (
+              {loading && (
+                <tr>
+                  <td colSpan="5" style={{ textAlign: 'center', padding: '24px' }}>Loading loan clients...</td>
+                </tr>
+              )}
+              {!loading && loanClients.length === 0 && (
                 <tr>
                   <td colSpan="5" style={{ textAlign: 'center', padding: '24px' }}>No loan clients found.</td>
                 </tr>

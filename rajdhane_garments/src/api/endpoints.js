@@ -15,10 +15,4 @@ export const ENDPOINTS = {
   GET_PRODUCTS: '/products',
   GET_PRODUCT_DETAILS: (id) => `/products/${id}`,
   CREATE_PRODUCT: '/products',
-  
-  // Loan Module
-  LOAN_ACCOUNTS: '/api/loan/accounts/',
-  LOAN_RECEIVES: '/api/loan/receives/',
-  LOAN_PAYMENTS: '/api/loan/payments/',
-  LOAN_STATEMENT: '/api/loan/statement/',
 };

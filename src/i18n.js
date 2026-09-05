@@ -28,8 +28,20 @@ const resources = {
         "new_invoice": "New Invoice",
         "receive": "Receive",
         "expense": "Expense",
+        "staff_payment": "Staff Payment",
+        "sales_return": "Sales Return",
+        "purchase_return": "Purchase Return",
+        "supplier_payment": "Supplier Payment",
         "clear_cache": "Clear Cache",
-        "switch_lang": "বাংলা"
+        "switch_lang": "বাংলা",
+        "my_profile": "My Profile",
+        "change_password": "Change Password",
+        "role": "Role",
+        "add_user": "Add User",
+        "settings": "Settings",
+        "shortcut_menu": "Shortcut Menu",
+        "company_info": "Company Information",
+        "server_info": "Server Information"
       },
       "dashboard": {
         "today_sales": "Today Sales",
@@ -84,6 +96,7 @@ const resources = {
         "report": " Report"
       },
       "sidebar": {
+        "show_balance": "Show Balance",
         "client": "Client",
         "add_new_client": "Add New Client",
         "client_list": "Client List",
@@ -96,6 +109,7 @@ const resources = {
         "supplier_list": "Supplier List",
         "supplier_group": "Supplier Group",
         "supplier_statement": "Supplier Statement",
+        "supplier_cheque_schedule": "Supplier Cheque Schedule",
 
         "receive": "Receive",
         "add_new": "Add New",
@@ -230,8 +244,20 @@ const resources = {
         "new_invoice": "নতুন ইনভয়েস",
         "receive": "জমা",
         "expense": "খরচ",
+        "staff_payment": "স্টাফ পেমেন্ট",
+        "sales_return": "বিক্রয় ফেরত",
+        "purchase_return": "মাল ফেরত",
+        "supplier_payment": "সাপ্লায়ার পেমেন্ট",
         "clear_cache": "ক্লিয়ার ক্যাশ",
-        "switch_lang": "English"
+        "switch_lang": "English",
+        "my_profile": "আমার প্রোফাইল",
+        "change_password": "পাসওয়ার্ড পরিবর্তন",
+        "role": "ভূমিকা",
+        "add_user": "যুক্ত ইউজার",
+        "settings": "সেটিংস",
+        "shortcut_menu": "শর্টকাট মেনু",
+        "company_info": "কোম্পানির তথ্য",
+        "server_info": "সার্ভার তথ্য"
       },
       "dashboard": {
         "today_sales": "আজকের বিক্রয়",
@@ -286,6 +312,7 @@ const resources = {
         "report": " রিপোর্ট"
       },
       "sidebar": {
+        "show_balance": "ব্যালেন্স দেখুন",
         "client": "কাস্টমার",
         "add_new_client": "নতুন কাস্টমার যোগ করুন",
         "client_list": "কাস্টমার তালিকা",
@@ -298,6 +325,7 @@ const resources = {
         "supplier_list": "সাপ্লায়ার তালিকা",
         "supplier_group": "সাপ্লায়ার গ্রুপ",
         "supplier_statement": "সাপ্লায়ার স্টেটমেন্ট",
+        "supplier_cheque_schedule": "সাপ্লায়ার চেক শিডিউল",
 
         "receive": "জমা",
         "add_new": "নতুন যোগ করুন",

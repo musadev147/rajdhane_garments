@@ -9,7 +9,6 @@ import SupplierCreate from '../pages/crm/supplier/SupplierCreate';
 import SupplierList from '../pages/crm/supplier/SupplierList';
 import SupplierGroup from '../pages/crm/supplier/SupplierGroup';
 import SupplierStatement from '../pages/crm/supplier/SupplierStatement';
-import SupplierChequeSchedule from '../pages/crm/supplier/SupplierChequeSchedule';
 
 const CrmRoutes = () => {
   return (
@@ -23,7 +22,9 @@ const CrmRoutes = () => {
       <Route path="supplier-list" element={<SupplierList />} />
       <Route path="supplier-group" element={<SupplierGroup />} />
       <Route path="supplier-statement" element={<SupplierStatement />} />
-      <Route path="supplier-cheque-schedule" element={<SupplierChequeSchedule />} />
+      {/* Add more CRM routes here like: */}
+      {/* <Route path="client-list" element={<ClientList />} /> */}
+      {/* <Route path="supplier-create" element={<SupplierCreate />} /> */}
     </Routes>
   );
 };
